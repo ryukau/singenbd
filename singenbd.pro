@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    counter.cpp \
+    waveform.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    counter.h \
+    waveform.h
 
 FORMS    += mainwindow.ui
