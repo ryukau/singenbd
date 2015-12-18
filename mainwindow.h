@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "soundplayer.h"
 #include "FMTOComplex.h"
+#include "Filter/FixedPointDCBlocker.h"
 
 namespace Ui {
 class MainWindow;
@@ -55,6 +56,7 @@ private:
     // 機能
     SoundPlayer soundPlayer;
     FMTOComplex fmto;
+    FixedPointDCBlocker dcBlocker;
 
     // 音データ
     QVector<float> waveSound;
@@ -68,6 +70,8 @@ private:
     void playSound();
     void saveSound();
     void renderSound();
+    void DcKill();
+    void Declick();
 
     void setupWaveforms();
     int getNumberOfSamples();

@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     FMTOComplex.cpp \
     TaikoOperator.cpp \
     Envelope.cpp \
-    Oscillator.cpp
+    Oscillator.cpp \
+    Filter/FixedPointDCBlocker.cpp
 
 HEADERS  += mainwindow.h \
     counter.h \
@@ -33,6 +34,8 @@ HEADERS  += mainwindow.h \
     TaikoOperator.h \
     Envelope.h \
     Oscillator.h \
-    BSplineCurve.h
+    BSplineCurve.h \
+    Filter/Filter.h \
+    Filter/FixedPointDCBlocker.h
 
 FORMS    += mainwindow.ui

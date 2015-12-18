@@ -160,6 +160,27 @@ void MainWindow::renderSound()
         waveSound[i] = fmto.render((float)i / SampleRate::get());
         //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
+
+    if (ui->checkBoxDcBlock->isChecked())
+        DcKill();
+
+    if (ui->checkBoxDeclick->isChecked())
+        Declick();
+}
+
+void MainWindow::DcKill()
+{
+    dcBlocker.clearBuffer();
+
+    for (int sample = 0; sample < waveSound.size(); ++sample)
+    {
+        waveSound[sample] = dcBlocker.pass(waveSound[sample]);
+    }
+}
+
+void MainWindow::Declick()
+{
+
 }
 
 void MainWindow::setupWaveforms()
