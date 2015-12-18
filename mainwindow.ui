@@ -108,6 +108,9 @@
            <pointsize>16</pointsize>
           </font>
          </property>
+         <property name="Maximum">
+          <double>128.000000000000000</double>
+         </property>
          <property name="upperDigits">
           <number>3</number>
          </property>

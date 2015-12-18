@@ -48,7 +48,10 @@ void MainWindow::saveSound()
 
 void MainWindow::renderSound()
 {
-    int numSamples = 48000;
+    int numSamples = getNumberOfSamples();
+
+    if (numSamples < 40)
+        numSamples = 40; // 最低サンプル数の保証
 
     fmto.clearBuffer();
     waveSound.resize(numSamples);
@@ -88,4 +91,10 @@ void MainWindow::setupWaveforms()
 
     waveEnvelope.resize(ui->waveformEnvelope->width()); // ここにバグがある
     ui->waveformEnvelope->setWave(&waveEnvelope);
+}
+
+int MainWindow::getNumberOfSamples()
+{
+    // counterDuration->valueの単位は秒
+    return static_cast<int>(ui->counterDuration->value() * SampleRate::get());
 }

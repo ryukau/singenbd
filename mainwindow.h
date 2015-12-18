@@ -41,6 +41,7 @@ private:
 
     // 関数
     void setupWaveforms();
+    int getNumberOfSamples();
 };
 
 #endif // MAINWINDOW_H
