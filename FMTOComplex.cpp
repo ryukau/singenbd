@@ -2,10 +2,11 @@
 
 #include <cassert>
 
-FMTOComplex::FMTOComplex() :
-    _duration(1.0),
-    fmto(numMaxOp),
-    out(numMaxOp)
+FMTOComplex::FMTOComplex()
+    : numMaxOp(3)
+    , _duration(1.0)
+    , fmto(3)
+    , out(3)
 {
 }
 
@@ -49,7 +50,6 @@ float FMTOComplex::render(float time)
 {
     fmto[0].setModInput(out[1]);
     fmto[1].setModInput(out[2]);
-    //fmto[2].setModInput();
 
     for (int i = 0; i < fmto.size(); ++i)
     {

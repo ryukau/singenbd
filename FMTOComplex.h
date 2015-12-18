@@ -32,5 +32,5 @@ private:
 
     float _duration;
 
-    const int numMaxOp = 3;
+    const int numMaxOp;
 };
