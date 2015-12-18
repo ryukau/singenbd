@@ -54,16 +54,19 @@ void MainWindow::on_pushButtonSave_clicked()
 void MainWindow::on_pushButtonOscillator1_clicked()
 {
     curOp = 0;
+    refreshOscillator();
 }
 
 void MainWindow::on_pushButtonOscillator2_clicked()
 {
     curOp = 1;
+    refreshOscillator();
 }
 
 void MainWindow::on_pushButtonOscillator3_clicked()
 {
     curOp = 2;
+    refreshOscillator();
 }
 
 void MainWindow::on_counterPitch_valueChanged(double value)
@@ -220,4 +223,36 @@ int MainWindow::getNumberOfSamples()
 {
     // counterDuration->valueの単位は秒
     return static_cast<int>(ui->counterDuration->value() * SampleRate::get());
+}
+
+int MainWindow::normalizeSliderValue(float value, int maximum)
+{
+    return static_cast<int>(value * static_cast<float>(maximum));
+}
+
+void MainWindow::refreshOscillator()
+{
+    ui->counterPitch->setValue(fmto.op(curOp).getPitch());
+    ui->comboBoxOscType->setCurrentIndex(static_cast<int>(fmto.op(curOp).osc.getType()));
+    ui->horizontalScrollBarPhase->setValue(normalizeSliderValue(fmto.op(curOp).osc.getPhaseOffset(), ui->horizontalScrollBarPhase->maximum()));
+    ui->horizontalScrollBarMod->setValue(normalizeSliderValue(fmto.op(curOp).getModIndex(), ui->horizontalScrollBarMod->maximum()));
+}
+
+DecayEnvelope& MainWindow::getEnvelopeType(int op, MainWindow::EnvType type)
+{
+    switch(type)
+    {
+    case EnvType::Amp:
+        return fmto.op(op).envAmp;
+
+    case EnvType::Pitch:
+        return fmto.op(op).envPitch;
+
+    case EnvType::Shape:
+        return fmto.op(op).envShape;
+
+    default:
+        Q_ASSERT(0);
+        return fmto.op(curOp).envAmp;
+    }
 }

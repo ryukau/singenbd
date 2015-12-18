@@ -78,6 +78,10 @@ private:
 
     void setupWaveforms();
     int getNumberOfSamples();
+
+    int normalizeSliderValue(float value, int maximum);
+    void refreshOscillator();
+    DecayEnvelope &getEnvelopeType(int op, MainWindow::EnvType type);
 };
 
 #endif // MAINWINDOW_H

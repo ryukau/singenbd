@@ -15,9 +15,11 @@ public:
 
     Oscillator osc;
     DecayEnvelope envAmp;
-    Envelope envPitch;
+    DecayEnvelope envPitch;
     DecayEnvelope envShape;
 
+    float getPitch();
+    float getModIndex();
     void setModInput(float input);
     void setPitch(float cent);
     void setModIndex(float index);

@@ -38,6 +38,16 @@ TaikoOperator& TaikoOperator::operator=(TaikoOperator &op)
 // render
 //
 
+float TaikoOperator::getPitch()
+{
+    return interval;
+}
+
+float TaikoOperator::getModIndex()
+{
+    return modIndex;
+}
+
 void TaikoOperator::setModInput(float input)
 {
     this->input = input;
