@@ -636,7 +636,7 @@
           </font>
          </property>
          <property name="Value">
-          <double>0.001000000000000</double>
+          <double>0.160000000000000</double>
          </property>
          <property name="Minimum">
           <double>0.001000000000000</double>
