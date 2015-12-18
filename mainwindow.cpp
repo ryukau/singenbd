@@ -93,6 +93,14 @@ void MainWindow::on_horizontalScrollBarMod_valueChanged(int value)
 }
 
 
+// Misc //
+
+void MainWindow::on_spinBoxSampleRate_valueChanged(int arg1)
+{
+    SampleRate::set(arg1);
+}
+
+
 // Envelope //
 
 void MainWindow::on_pushButtonEnvelopeAmp_clicked()

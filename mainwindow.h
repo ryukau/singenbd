@@ -38,6 +38,8 @@ private slots:
 
     void on_pushButtonEnvelopePitch_clicked();
 
+    void on_spinBoxSampleRate_valueChanged(int arg1);
+
 private:
     enum class EnvType : int
     {
