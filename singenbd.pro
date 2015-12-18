@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     soundplayer.cpp \
     utils.cpp \
     FMTOComplex.cpp \
-    TaikoOperator.cpp
+    TaikoOperator.cpp \
+    Envelope.cpp \
+    Oscillator.cpp
 
 HEADERS  += mainwindow.h \
     counter.h \
@@ -28,6 +30,8 @@ HEADERS  += mainwindow.h \
     soundplayer.h \
     utils.h \
     FMTOComplex.h \
-    TaikoOperator.h
+    TaikoOperator.h \
+    Envelope.h \
+    Oscillator.h
 
 FORMS    += mainwindow.ui
