@@ -1,16 +1,7 @@
 ﻿//
 // オペレータは以下のように接続される。
 //
-// 2   5-+ 8-+
-// |   | | | |
-// 1   4-+ 7 |
-// |   |   | |
-// 0   3   6-+  左から順にtower1, tower2, tower3。
-// +---+---+
-//     |
-//     FX       エフェクト（未実装）
-//     |
-//     out
+// 3-2-1-out
 //
 //
 //
@@ -33,11 +24,13 @@ public:
     void setDuration(float dur);
 
     void clearBuffer();
-    float render(float time, float frequencyMul, float frequencyAdd, float frequencyMod);
+    float render(float time);
 
 private:
     std::deque<TaikoOperator> fmto;
     std::deque<float> out;
 
     float _duration;
+
+    const int numMaxOp = 3;
 };
