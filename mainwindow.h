@@ -24,6 +24,8 @@ private slots:
     void on_pushButtonRender_clicked();
     void on_pushButtonSave_clicked();
 
+    void on_pushButtonPlay_clicked();
+
 private:
     Ui::MainWindow *ui;
 

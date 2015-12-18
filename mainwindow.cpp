@@ -55,6 +55,11 @@ void MainWindow::on_pushButtonRender_clicked()
     playSound();
 }
 
+void MainWindow::on_pushButtonPlay_clicked()
+{
+    playSound();
+}
+
 void MainWindow::on_pushButtonSave_clicked()
 {
     saveSound();
@@ -82,6 +87,5 @@ void MainWindow::renderSinewave()
         waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
 }
-
 
 
