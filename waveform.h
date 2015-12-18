@@ -14,6 +14,7 @@ class Waveform : public QWidget
     Q_PROPERTY(QColor colorAxis READ colorAxis WRITE setColorAxis)
     Q_PROPERTY(bool displaySampleNumber READ displaySampleNumber WRITE setDisplaySampleNumber)
     Q_PROPERTY(bool zoom READ zoom WRITE setZoom)
+    Q_PROPERTY(bool upperHalf READ upperHalf WRITE setUpperHalf)
 
 public:
     explicit Waveform(QWidget *parent = 0);
@@ -24,10 +25,12 @@ public:
     QColor colorAxis();
     bool displaySampleNumber();
     bool zoom();
+    bool upperHalf();
     void setColorWave(QColor color);
     void setColorAxis(QColor color);
     void setDisplaySampleNumber(bool display);
     void setZoom(bool z);
+    void setUpperHalf(bool uh);
     void setWave(QVector<float> * wave);
 
     QSize sizeHint() const;
@@ -56,6 +59,7 @@ private:
 
     bool _displaySampleNumber;
     bool _zoom;
+    bool _upperHalf;
 
     int inputSize;
     int inputOffset;

@@ -127,7 +127,7 @@ QSize Counter::sizeHint() const
 {
     QFontMetrics fontMetrics(font());
     QString str = QString("%1").arg(_value, _upperDigits + 1 /* 小数点 */ + _lowerDigits, 'f', _lowerDigits, '0');
-    return QSize(fontMetrics.width(str), fontMetrics.height());
+    return QSize(fontMetrics.width(str), fontMetrics.ascent());
 }
 
 
@@ -153,7 +153,7 @@ void Counter::paintEvent(QPaintEvent *event)
     painter.setPen(QColor::QColor(0, 0, 0));
 
     QFontMetrics fontMetrics(font());
-    painter.drawText(0, fontMetrics.height(), valueString());
+    painter.drawText(0, fontMetrics.ascent(), valueString());
 }
 
 

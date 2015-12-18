@@ -8,10 +8,10 @@
 #include <cmath>
 
 
-const float eps = 1e-52f;
-const float PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679f;
+const double eps = 1e-52;
+const double PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679;
 
-const float xScaleCoff = 2.0f;
+const double xScaleCoff = 2.0;
 const int windowLength = 256;
 
 
@@ -32,6 +32,7 @@ Waveform::Waveform(QWidget *parent) :
     _colorAxis(180, 180, 220),
     _displaySampleNumber(true),
     _zoom(true),
+    _upperHalf(false),
     draggingWaveform(false)
 {
     setStyleSheet("background-color:white;");
@@ -50,6 +51,7 @@ Waveform::Waveform(QVector<float> * wave, QWidget *parent) :
     _colorAxis(180, 180, 220),
     _displaySampleNumber(true),
     _zoom(true),
+    _upperHalf(false),
     draggingWaveform(false)
 {
     setStyleSheet("background-color:white;");
@@ -83,6 +85,11 @@ bool Waveform::zoom()
     return _zoom;
 }
 
+bool Waveform::upperHalf()
+{
+    return _upperHalf;
+}
+
 void Waveform::setColorWave(QColor color)
 {
     _colorWave = color;
@@ -101,6 +108,11 @@ void Waveform::setDisplaySampleNumber(bool display)
 void Waveform::setZoom(bool z)
 {
     _zoom = z;
+}
+
+void Waveform::setUpperHalf(bool uh)
+{
+    _upperHalf = uh;
 }
 
 
@@ -137,8 +149,10 @@ void Waveform::paintEvent(QPaintEvent *event)
     QPen axisPen(_colorAxis);
     axisPen.setWidthF(2.0);
 
-
-    int heightPerTwo = height() / 2;
+    // 上半分だけの描画かどうかを設定
+    int _height = height();
+    if (!_upperHalf)
+        _height /= 2;
 
     // スタイルシートを描画
     QStyleOption opt;
@@ -147,21 +161,21 @@ void Waveform::paintEvent(QPaintEvent *event)
 
     // 軸を描画
     painter.setPen(axisPen);
-    painter.drawLine(0, heightPerTwo, width(), heightPerTwo);
+    painter.drawLine(0, _height, width(), _height);
 
     // 波形を描画
     painter.setPen(wavePen);
-    painter.translate(0, heightPerTwo); // 整列: x軸左揃え、y軸中央揃え
+    painter.translate(0, _height); // 整列: x軸左揃え、y軸中央揃え
 
     for (int i = 1; i < width(); ++i)
     {
-        painter.drawLine(i - 1, dataDecimated.at(i - 1) * heightPerTwo, i, dataDecimated.at(i) * heightPerTwo);
+        painter.drawLine(i - 1, dataDecimated.at(i - 1) * _height, i, dataDecimated.at(i) * _height);
         //painter.drawLine(i - 1, dataMin.at(i - 1) * heightPerTwo, i, dataMin.at(i) * heightPerTwo);
         //painter.drawLine(i - 1, dataMax.at(i - 1) * heightPerTwo, i, dataMax.at(i) * heightPerTwo);
-        painter.drawLine(i, dataMin.at(i) * heightPerTwo, i, dataMax.at(i) * heightPerTwo);
+        painter.drawLine(i, dataMin.at(i) * _height, i, dataMax.at(i) * _height);
 
         if (dataPoint.at(i))
-            painter.drawArc(i - 4, dataDecimated.at(i) * heightPerTwo - 4, 8, 8, 0, 5760);
+            painter.drawArc(i - 4, dataDecimated.at(i) * _height - 4, 8, 8, 0, 5760);
     }
 
     // テキストを表示
@@ -193,7 +207,7 @@ void Waveform::wheelEvent(QWheelEvent *event)
         return;
 
     QPoint p = this->mapFromGlobal(QCursor::pos()); // マウスの位置を取得
-    float xOffset = qMax((float)p.x() / (float)width(), 0.0f);
+    double xOffset = qMax((double)p.x() / width(), 0.0);
 
     if (event->angleDelta().y() < 0)
     {
@@ -301,9 +315,9 @@ void Waveform::resample()
         data->insert(0, win.size() / 2, 0.0);
         for (int i = 0; i < width(); ++i)
         {
-            t = (float)i * inputSize / width() + inputOffset;
+            t = (double)i * inputSize / width() + inputOffset;
 
-            float y = 0.0;
+            double y = 0.0;
             for (int n = 0; n < win.size(); ++n)
             {
                 if (data->size() <= t + n) break;
@@ -339,7 +353,7 @@ void Waveform::resizeDisplayDataWidth()
 
 float Waveform::sinc(float input)
 {
-    float a = PI * input;
+    double a = PI * input;
     if (fabs(a) < eps)
     {
         return 1;
@@ -350,9 +364,9 @@ float Waveform::sinc(float input)
 
 void Waveform::windowFunc(QVector<float> * output)
 {
-    float omega = 0.0;
-    //float m = (output->size() - 1) / 2.0; // Gaussian
-    //float sigma = 0.2; // Gaussian
+    double omega = 0.0;
+    //double m = (output->size() - 1) / 2.0; // Gaussian
+    //double sigma = 0.2; // Gaussian
     for (int n = 0; n < output->size(); ++n)
     {
         omega = 2.0 * PI * n / (output->size() - 1);
@@ -367,11 +381,11 @@ void Waveform::windowFunc(QVector<float> * output)
         //output->replace(n, 0.3635819 - 0.4891775*cos(omega) + 0.1365995*cos(2.0*omega) - 0.0106411*cos(3.0*omega));
 
         // Cosine
-        output->replace(n, sin(omega / 2.0));
+        output->replace(n, sinf(omega / 2.0));
 
         // Gaussian
-        //float nm = n-m;
-        //float s = (sigma * output->size());
+        //double nm = n-m;
+        //double s = (sigma * output->size());
         //output->replace(n, exp(-nm*nm / (2.0 * s * s)));
     }
 }
