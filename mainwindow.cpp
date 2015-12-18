@@ -120,6 +120,19 @@ void MainWindow::on_pushButtonEnvelopePitch_clicked()
 
 
 //
+// protected events
+//
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
+
+    waveEnvelope.resize(ui->waveformEnvelope->width());
+    ui->waveformEnvelope->refresh();
+}
+
+
+//
 // private
 //
 
@@ -201,8 +214,6 @@ void MainWindow::Declick(int declickLength)
 void MainWindow::setupWaveforms()
 {
     ui->waveformMain->setWave(&waveSound);
-
-    waveEnvelope.resize(ui->waveformEnvelope->width()); // ここにバグがある
     ui->waveformEnvelope->setWave(&waveEnvelope);
 }
 

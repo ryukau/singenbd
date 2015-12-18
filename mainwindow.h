@@ -19,12 +19,12 @@ public:
     ~MainWindow();
 
 private slots:
-    // render
+    // Render
     void on_pushButtonRender_clicked();
     void on_pushButtonPlay_clicked();
     void on_pushButtonSave_clicked();
 
-    // oscillator
+    // Oscillator
     void on_pushButtonOscillator1_clicked();
     void on_pushButtonOscillator2_clicked();
     void on_pushButtonOscillator3_clicked();
@@ -33,13 +33,16 @@ private slots:
     void on_horizontalScrollBarPhase_valueChanged(int value);
     void on_horizontalScrollBarMod_valueChanged(int value);
 
+    // Misc
+    void on_spinBoxSampleRate_valueChanged(int arg1);
+
+    // Envelope
     void on_pushButtonEnvelopeAmp_clicked();
-
     void on_pushButtonEnvelopeShape_clicked();
-
     void on_pushButtonEnvelopePitch_clicked();
 
-    void on_spinBoxSampleRate_valueChanged(int arg1);
+protected:
+    void resizeEvent(QResizeEvent *event);
 
 private:
     enum class EnvType : int

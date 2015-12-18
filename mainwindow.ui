@@ -20,6 +20,12 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <widget class="QGroupBox" name="groupBoxOscillator">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string>Oscillator</string>
       </property>
@@ -187,6 +193,12 @@
     </item>
     <item row="0" column="1" rowspan="2">
      <widget class="QGroupBox" name="groupBoxEnvelope">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string>Envelope</string>
       </property>
@@ -508,6 +520,12 @@
     </item>
     <item row="1" column="0">
      <widget class="QGroupBox" name="groupBoxSubOsc">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string>SubOsc.</string>
       </property>
@@ -610,6 +628,12 @@
     </item>
     <item row="2" column="0">
      <widget class="QGroupBox" name="groupBoxMisc">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string>Misc.</string>
       </property>
@@ -704,6 +728,12 @@
     </item>
     <item row="2" column="1" rowspan="2">
      <widget class="QFrame" name="frameWaveform">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -757,6 +787,12 @@
     </item>
     <item row="3" column="0">
      <widget class="QGroupBox" name="groupBoxFile">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="title">
        <string>File</string>
       </property>
@@ -773,6 +809,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QLineEdit" name="lineEditFilePrefix">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>SingenBD</string>
          </property>
