@@ -53,20 +53,17 @@ void MainWindow::on_pushButtonSave_clicked()
 
 void MainWindow::on_pushButtonOscillator1_clicked()
 {
-    curOp = 0;
-    refreshOscillator();
+    setCurrentOperator(0);
 }
 
 void MainWindow::on_pushButtonOscillator2_clicked()
 {
-    curOp = 1;
-    refreshOscillator();
+    setCurrentOperator(1);
 }
 
 void MainWindow::on_pushButtonOscillator3_clicked()
 {
-    curOp = 2;
-    refreshOscillator();
+    setCurrentOperator(2);
 }
 
 void MainWindow::on_counterPitch_valueChanged(double value)
@@ -107,17 +104,17 @@ void MainWindow::on_spinBoxSampleRate_valueChanged(int arg1)
 
 void MainWindow::on_pushButtonEnvelopeAmp_clicked()
 {
-    curEnv = EnvType::Amp;
+    setCurrentEnvelope(EnvType::Amp);
 }
 
 void MainWindow::on_pushButtonEnvelopeShape_clicked()
 {
-    curEnv = EnvType::Shape;
+    setCurrentEnvelope(EnvType::Shape);
 }
 
 void MainWindow::on_pushButtonEnvelopePitch_clicked()
 {
-    curEnv = EnvType::Pitch;
+    setCurrentEnvelope(EnvType::Pitch);
 }
 
 
@@ -213,6 +210,7 @@ void MainWindow::Declick(int declickLength)
     }
 }
 
+
 void MainWindow::setupWaveforms()
 {
     ui->waveformMain->setWave(&waveSound);
@@ -223,6 +221,13 @@ int MainWindow::getNumberOfSamples()
 {
     // counterDuration->valueの単位は秒
     return static_cast<int>(ui->counterDuration->value() * SampleRate::get());
+}
+
+
+void MainWindow::setCurrentOperator(int op)
+{
+    curOp = op;
+    refreshOscillator();
 }
 
 int MainWindow::normalizeSliderValue(float value, int maximum)
@@ -238,7 +243,14 @@ void MainWindow::refreshOscillator()
     ui->horizontalScrollBarMod->setValue(normalizeSliderValue(fmto.op(curOp).getModIndex(), ui->horizontalScrollBarMod->maximum()));
 }
 
-DecayEnvelope& MainWindow::getEnvelopeType(int op, MainWindow::EnvType type)
+
+void MainWindow::setCurrentEnvelope(EnvType type)
+{
+    curEnv = type;
+    refreshEnvelope(curEnv);
+}
+
+DecayEnvelope& MainWindow::getEnvelopeType(int op, EnvType type)
 {
     switch(type)
     {
@@ -255,4 +267,32 @@ DecayEnvelope& MainWindow::getEnvelopeType(int op, MainWindow::EnvType type)
         Q_ASSERT(0);
         return fmto.op(curOp).envAmp;
     }
+}
+
+void MainWindow::refreshEnvelope(EnvType type)
+{
+    DecayEnvelope env = getEnvelopeType(curOp, type);
+
+    ui->horizontalScrollBarD1Gain->setValue(             env.e1.getGain());
+    ui->horizontalScrollBarD1Time->setValue(             env.e1.getDecayTime());
+    ui->horizontalScrollBarD1Tension->setValue(          env.e1.getDecayTension());
+    ui->comboBoxD1Type->setCurrentIndex(static_cast<int>(env.e1.getType()));
+    ui->horizontalScrollBarD2Gain->setValue(             env.e2.getGain());
+    ui->horizontalScrollBarD2Time->setValue(             env.e2.getDecayTime());
+    ui->horizontalScrollBarD2Tension->setValue(          env.e2.getDecayTension());
+    ui->comboBoxD2Type->setCurrentIndex(static_cast<int>(env.e2.getType()));
+
+    refreshWaveformEnvelope(type);
+}
+
+void MainWindow::refreshWaveformEnvelope(EnvType type)
+{
+    DecayEnvelope env = getEnvelopeType(curOp, type);
+
+    for (int i = 0; i < waveEnvelope.size(); ++i)
+    {
+        waveEnvelope[i] = - env.at((float)i / (float)waveEnvelope.size());
+    }
+
+    ui->waveformEnvelope->refresh();
 }
