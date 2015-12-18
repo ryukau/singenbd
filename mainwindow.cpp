@@ -46,9 +46,22 @@ void MainWindow::saveSound()
     soundPlayer.SaveWaveFile(name);
 }
 
+void MainWindow::renderSound()
+{
+    int numSamples = 48000;
+
+    fmto.clearBuffer();
+    waveSound.resize(numSamples);
+    for (int i = 0; i < numSamples; ++i)
+    {
+        waveSound[i] = fmto.render((float)i / SampleRate::get());
+        //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
+    }
+}
+
 void MainWindow::on_pushButtonRender_clicked()
 {
-    renderSinewave();
+    renderSound();
 
     soundPlayer.setWave(waveSound);
     ui->waveformMain->refresh();
@@ -76,16 +89,3 @@ void MainWindow::setupWaveforms()
     waveEnvelope.resize(ui->waveformEnvelope->width()); // ここにバグがある
     ui->waveformEnvelope->setWave(&waveEnvelope);
 }
-
-void MainWindow::renderSinewave()
-{
-    int numSamples = 48000;
-
-    waveSound.resize(numSamples);
-    for (int i = 0; i < numSamples; ++i)
-    {
-        waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
-    }
-}
-
-

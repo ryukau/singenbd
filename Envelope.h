@@ -1,30 +1,15 @@
 ﻿#pragma once
 
-#include "Ranged.h"
-#include <unordered_map>
-#include <cstring>
 
 class Envelope
 {
 public:
     enum class Type : int
     {
-        Exponential = 0,
-        Linear,
+        BSplineSmooth = 0,
         BSpline,
-        BSplineSmooth,
-        Last,
-    };
-
-    enum class Parameters : int
-    {
-        Type = 0,
-        Gain,
-        Offset,
-        AttackTime,
-        AttackTension,
-        DecayTime,
-        DecayTension,
+        Exponential,
+        Linear,
         Last,
     };
 
@@ -34,31 +19,32 @@ public:
 
     Envelope& operator=(Envelope& env);
 
-    RangedFloat Gain;
-    RangedFloat Offset;
-    RangedFloat AttackTime;
-    RangedFloat AttackTension;
-    RangedFloat DecayTime;
-    RangedFloat DecayTension;
 
     Type getType();
+    float getGain();
+    float getDecayTime();
+    float getDecayTension();
     void setType(Type type);
-
-    void setMid();
+    void setGain(float gain);
+    void setDecayTime(float time);
+    void setDecayTension(float tension);
 
     float at(float time);
 
 private:
     Type envType;
+    float Gain;
+    float DecayTime;
+    float DecayTension;
 
     float linearCurve(float time);
-    float linearCurveAttack(float time, float tension);
     float linearCurveDecay(float time, float tension);
 
     float expCurve(float time);
     float expCurveAttack(float time, float tension);
 
     float bSplineCurve(float time);
+
     float bSplineSmoothCurve(float time);
     float bSplineSmoothCurveAttack(float time, float tension);
 };

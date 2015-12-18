@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>647</width>
-    <height>539</height>
+    <height>567</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,9 +88,9 @@
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QCheckBox" name="checkBoxMod">
+        <widget class="QCheckBox" name="checkBoxModulation">
          <property name="text">
-          <string>Mod</string>
+          <string>Modulation</string>
          </property>
         </widget>
        </item>
@@ -166,141 +166,6 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QGroupBox" name="groupBoxSubOsc">
-      <property name="title">
-       <string>SubOsc.</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_9">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBoxSubOscDetune">
-         <property name="text">
-          <string>Detune</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="checkBoxSubOscPhase">
-         <property name="text">
-          <string>Phase</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="checkBox_25">
-         <property name="text">
-          <string>lllllllllll</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QScrollBar" name="horizontalScrollBarSubOscDetune">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximum">
-          <number>127</number>
-         </property>
-         <property name="pageStep">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="invertedControls">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QScrollBar" name="horizontalScrollBarSubOscPhase">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximum">
-          <number>127</number>
-         </property>
-         <property name="pageStep">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="invertedControls">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QScrollBar" name="horizontalScrollBar_5">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximum">
-          <number>127</number>
-         </property>
-         <property name="pageStep">
-          <number>1</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="invertedControls">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QGroupBox" name="groupBoxFile">
-      <property name="title">
-       <string>File</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_10">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBoxFilePrefix">
-         <property name="text">
-          <string>Prefix</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEditFilePrefix">
-         <property name="text">
-          <string>SingenBD</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButtonSaveIni">
-         <property name="text">
-          <string>Save .ini</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="0" column="1" rowspan="2">
      <widget class="QGroupBox" name="groupBoxEnvelope">
       <property name="title">
@@ -308,6 +173,28 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="2" column="1" colspan="2">
+        <widget class="QScrollBar" name="horizontalScrollBarCross">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximum">
+          <number>127</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedControls">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarDecay1">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -329,13 +216,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QCheckBox" name="checkBoxD1Tension">
-         <property name="text">
-          <string>D1.Tension</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QPushButton" name="pushButtonEnvelopeAmp">
          <property name="text">
@@ -352,6 +232,13 @@
          </property>
         </widget>
        </item>
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="checkBoxD1Tension">
+         <property name="text">
+          <string>D1.Tension</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="2">
         <widget class="QPushButton" name="pushButtonEnvelopePitch">
          <property name="text">
@@ -365,6 +252,13 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="checkBoxGain">
+         <property name="text">
+          <string>Gain</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="1">
         <widget class="QPushButton" name="pushButtonEnvelopeShape">
          <property name="text">
@@ -375,6 +269,13 @@
          </property>
          <property name="autoExclusive">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QCheckBox" name="checkBoxDecay2">
+         <property name="text">
+          <string>Decay2</string>
          </property>
         </widget>
        </item>
@@ -406,55 +307,38 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="checkBoxDecay2">
-         <property name="text">
-          <string>Decay2</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QCheckBox" name="checkBoxGain">
-         <property name="text">
-          <string>Gain</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
+       <item row="3" column="0">
         <widget class="QCheckBox" name="checkBoxDecay1">
          <property name="text">
           <string>Decay1</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
+       <item row="7" column="0">
         <widget class="QCheckBox" name="checkBoxD2Tension">
          <property name="text">
           <string>D2.Tension</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="8" column="0">
         <widget class="QCheckBox" name="checkBoxD1Type">
          <property name="text">
           <string>D1.Type</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="0">
+       <item row="9" column="0">
         <widget class="QCheckBox" name="checkBoxD2Type">
          <property name="text">
           <string>D2.Type</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="1" colspan="2">
+       <item row="9" column="1" colspan="2">
         <widget class="QComboBox" name="comboBoxD2Type"/>
        </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="QComboBox" name="comboBoxD1Type"/>
-       </item>
-       <item row="5" column="1" colspan="2">
+       <item row="7" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarD2Tension">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -476,7 +360,10 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="1" colspan="2">
+       <item row="8" column="1" colspan="2">
+        <widget class="QComboBox" name="comboBoxD1Type"/>
+       </item>
+       <item row="6" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarDecay2">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -498,7 +385,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1" colspan="2">
+       <item row="4" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarD1Tension">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -520,7 +407,7 @@
          </property>
         </widget>
        </item>
-       <item row="8" column="0" colspan="3">
+       <item row="10" column="0" colspan="3">
         <widget class="Waveform" name="waveformEnvelope">
          <property name="enabled">
           <bool>true</bool>
@@ -534,7 +421,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>0</height>
+           <height>50</height>
           </size>
          </property>
          <property name="displaySampleNumber">
@@ -548,56 +435,112 @@
          </property>
         </widget>
        </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="1" rowspan="2">
-     <widget class="QFrame" name="frameWaveform">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>2</number>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="pushButtonRandom">
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxCross">
          <property name="text">
-          <string>Random</string>
+          <string>Cross</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="4">
-        <widget class="Waveform" name="waveformMain">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QGroupBox" name="groupBoxSubOsc">
+      <property name="title">
+       <string>SubOsc.</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_9">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBoxSubOscGain">
+         <property name="text">
+          <string>Gain</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="checkBoxSubOscDetune">
+         <property name="text">
+          <string>Detune</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxSubOscPhase">
+         <property name="text">
+          <string>Phase</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="pushButtonRender">
-         <property name="text">
-          <string>Render</string>
+        <widget class="QScrollBar" name="horizontalScrollBarSubOscDetune">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximum">
+          <number>127</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedControls">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="pushButtonPlay">
-         <property name="text">
-          <string>Play</string>
+       <item row="2" column="1">
+        <widget class="QScrollBar" name="horizontalScrollBarSubOscPhase">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximum">
+          <number>127</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedControls">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="3">
-        <widget class="QPushButton" name="pushButtonSave">
-         <property name="text">
-          <string>Save</string>
+       <item row="0" column="1">
+        <widget class="QScrollBar" name="horizontalScrollBarSubOscGain">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximum">
+          <number>127</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedControls">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -692,6 +635,92 @@
         <widget class="QCheckBox" name="checkBoxDeclick">
          <property name="text">
           <string>Declick</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="1" rowspan="2">
+     <widget class="QFrame" name="frameWaveform">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButtonRandom">
+         <property name="text">
+          <string>Random</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="4">
+        <widget class="Waveform" name="waveformMain">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButtonRender">
+         <property name="text">
+          <string>Render</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QPushButton" name="pushButtonPlay">
+         <property name="text">
+          <string>Play</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="pushButtonSave">
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QGroupBox" name="groupBoxFile">
+      <property name="title">
+       <string>File</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_10">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBoxFilePrefix">
+         <property name="text">
+          <string>Prefix</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEditFilePrefix">
+         <property name="text">
+          <string>SingenBD</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButtonSaveIni">
+         <property name="text">
+          <string>Save .ini</string>
          </property>
         </widget>
        </item>

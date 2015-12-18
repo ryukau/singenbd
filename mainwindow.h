@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "soundplayer.h"
+#include "FMTOComplex.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +21,7 @@ private slots:
 
     void playSound();
     void saveSound();
+    void renderSound();
 
     void on_pushButtonRender_clicked();
     void on_pushButtonSave_clicked();
@@ -29,8 +31,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    // 追加機能
+    // 機能
     SoundPlayer soundPlayer;
+    FMTOComplex fmto;
 
     // 音データ
     QVector<float> waveSound;
@@ -38,7 +41,6 @@ private:
 
     // 関数
     void setupWaveforms();
-    void renderSinewave();
 };
 
 #endif // MAINWINDOW_H

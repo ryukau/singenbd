@@ -32,6 +32,7 @@ HEADERS  += mainwindow.h \
     FMTOComplex.h \
     TaikoOperator.h \
     Envelope.h \
-    Oscillator.h
+    Oscillator.h \
+    BSplineCurve.h
 
 FORMS    += mainwindow.ui
