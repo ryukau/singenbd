@@ -124,5 +124,6 @@ float Oscillator::SimpleSaw(float phase, float pw)
 
 float Oscillator::SimpleSquare(float phase, float pw)
 {
+    phase += phaseOffset;
     return (fmod(phase, 1.0f) < pw) ? -1.0f : 1.0f;
 }
