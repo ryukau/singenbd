@@ -68,7 +68,8 @@ void MainWindow::on_pushButtonOscillator3_clicked()
 
 void MainWindow::on_counterPitch_valueChanged(double value)
 {
-    fmto.op(curOp).setFrequency(value);
+    // value はcent値なので100.0をかける
+    fmto.op(curOp).setFrequency(PitchCalc::intervalToFreq(value * 100.0f));
 }
 
 void MainWindow::on_comboBoxOscType_currentIndexChanged(const QString &arg1)
