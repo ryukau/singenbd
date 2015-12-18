@@ -94,6 +94,11 @@ void MainWindow::on_horizontalScrollBarMod_valueChanged(int value)
 
 // Misc //
 
+void MainWindow::on_counterDuration_valueChanged(double value)
+{
+    fmto.setDuration(value);
+}
+
 void MainWindow::on_spinBoxSampleRate_valueChanged(int arg1)
 {
     SampleRate::set(arg1);
@@ -115,6 +120,78 @@ void MainWindow::on_pushButtonEnvelopeShape_clicked()
 void MainWindow::on_pushButtonEnvelopePitch_clicked()
 {
     setCurrentEnvelope(EnvType::Pitch);
+}
+
+
+void MainWindow::on_horizontalScrollBarD1Gain_valueChanged(int value)
+{
+    float val = normalizeSliderInput(value, ui->horizontalScrollBarD1Gain->maximum());
+    getEnvelopeType(curOp, curEnv).e1.setGain(val);
+    refreshWaveformEnvelope(curEnv);
+}
+
+void MainWindow::on_horizontalScrollBarD1Time_valueChanged(int value)
+{
+    float val = normalizeSliderInput(value, ui->horizontalScrollBarD1Time->maximum());
+    getEnvelopeType(curOp, curEnv).e1.setDecayTime(val);
+    refreshWaveformEnvelope(curEnv);
+}
+
+void MainWindow::on_horizontalScrollBarD1Tension_valueChanged(int value)
+{
+    float val = normalizeSliderInput(value, ui->horizontalScrollBarD1Tension->maximum());
+    getEnvelopeType(curOp, curEnv).e1.setDecayTension(val);
+    refreshWaveformEnvelope(curEnv);
+}
+
+void MainWindow::on_comboBoxD1Type_currentIndexChanged(const QString &arg1)
+{
+    if (arg1.contains("BSplineSmooth"))
+        getEnvelopeType(curOp, curEnv).e1.setType(Envelope::Type::BSplineSmooth);
+    else if (arg1.contains("BSpline"))
+        getEnvelopeType(curOp, curEnv).e1.setType(Envelope::Type::BSpline);
+    else if (arg1.contains("Exponential"))
+        getEnvelopeType(curOp, curEnv).e1.setType(Envelope::Type::Exponential);
+    else if (arg1.contains("Linear"))
+        getEnvelopeType(curOp, curEnv).e1.setType(Envelope::Type::Linear);
+
+    refreshWaveformEnvelope(curEnv);
+}
+
+
+void MainWindow::on_horizontalScrollBarD2Gain_valueChanged(int value)
+{
+    float val = normalizeSliderInput(value, ui->horizontalScrollBarD2Gain->maximum());
+    getEnvelopeType(curOp, curEnv).e2.setGain(val);
+    refreshWaveformEnvelope(curEnv);
+}
+
+void MainWindow::on_horizontalScrollBarD2Time_valueChanged(int value)
+{
+    float val = normalizeSliderInput(value, ui->horizontalScrollBarD2Time->maximum());
+    getEnvelopeType(curOp, curEnv).e2.setDecayTime(val);
+    refreshWaveformEnvelope(curEnv);
+}
+
+void MainWindow::on_horizontalScrollBarD2Tension_valueChanged(int value)
+{
+    float val = normalizeSliderInput(value, ui->horizontalScrollBarD2Tension->maximum());
+    getEnvelopeType(curOp, curEnv).e2.setDecayTension(val);
+    refreshWaveformEnvelope(curEnv);
+}
+
+void MainWindow::on_comboBoxD2Type_currentIndexChanged(const QString &arg1)
+{
+    if (arg1.contains("BSplineSmooth"))
+        getEnvelopeType(curOp, curEnv).e2.setType(Envelope::Type::BSplineSmooth);
+    else if (arg1.contains("BSpline"))
+        getEnvelopeType(curOp, curEnv).e2.setType(Envelope::Type::BSpline);
+    else if (arg1.contains("Exponential"))
+        getEnvelopeType(curOp, curEnv).e2.setType(Envelope::Type::Exponential);
+    else if (arg1.contains("Linear"))
+        getEnvelopeType(curOp, curEnv).e2.setType(Envelope::Type::Linear);
+
+    refreshWaveformEnvelope(curEnv);
 }
 
 
@@ -220,7 +297,18 @@ void MainWindow::setupWaveforms()
 int MainWindow::getNumberOfSamples()
 {
     // counterDuration->valueの単位は秒
-    return static_cast<int>(ui->counterDuration->value() * SampleRate::get());
+    return static_cast<int>(fmto.duration() * SampleRate::get());
+}
+
+
+float MainWindow::normalizeSliderInput(int value, int maximum)
+{
+    return static_cast<float>(value) / static_cast<float>(maximum);
+}
+
+int MainWindow::normalizeSliderValue(float value, int maximum)
+{
+    return static_cast<int>(value * static_cast<float>(maximum));
 }
 
 
@@ -230,17 +318,14 @@ void MainWindow::setCurrentOperator(int op)
     refreshOscillator();
 }
 
-int MainWindow::normalizeSliderValue(float value, int maximum)
-{
-    return static_cast<int>(value * static_cast<float>(maximum));
-}
-
 void MainWindow::refreshOscillator()
 {
     ui->counterPitch->setValue(fmto.op(curOp).getPitch());
     ui->comboBoxOscType->setCurrentIndex(static_cast<int>(fmto.op(curOp).osc.getType()));
     ui->horizontalScrollBarPhase->setValue(normalizeSliderValue(fmto.op(curOp).osc.getPhaseOffset(), ui->horizontalScrollBarPhase->maximum()));
     ui->horizontalScrollBarMod->setValue(normalizeSliderValue(fmto.op(curOp).getModIndex(), ui->horizontalScrollBarMod->maximum()));
+
+    refreshEnvelope(curEnv);
 }
 
 
@@ -273,13 +358,13 @@ void MainWindow::refreshEnvelope(EnvType type)
 {
     DecayEnvelope env = getEnvelopeType(curOp, type);
 
-    ui->horizontalScrollBarD1Gain->setValue(             env.e1.getGain());
-    ui->horizontalScrollBarD1Time->setValue(             env.e1.getDecayTime());
-    ui->horizontalScrollBarD1Tension->setValue(          env.e1.getDecayTension());
+    ui->horizontalScrollBarD1Gain->setValue(normalizeSliderValue(env.e1.getGain(), ui->horizontalScrollBarD1Gain->maximum()));
+    ui->horizontalScrollBarD1Time->setValue(normalizeSliderValue(env.e1.getDecayTime(), ui->horizontalScrollBarD1Time->maximum()));
+    ui->horizontalScrollBarD1Tension->setValue(normalizeSliderValue(env.e1.getDecayTension(), ui->horizontalScrollBarD1Tension->maximum()));
     ui->comboBoxD1Type->setCurrentIndex(static_cast<int>(env.e1.getType()));
-    ui->horizontalScrollBarD2Gain->setValue(             env.e2.getGain());
-    ui->horizontalScrollBarD2Time->setValue(             env.e2.getDecayTime());
-    ui->horizontalScrollBarD2Tension->setValue(          env.e2.getDecayTension());
+    ui->horizontalScrollBarD2Gain->setValue(normalizeSliderValue(env.e2.getGain(), ui->horizontalScrollBarD2Gain->maximum()));
+    ui->horizontalScrollBarD2Time->setValue(normalizeSliderValue(env.e2.getDecayTime(), ui->horizontalScrollBarD2Time->maximum()));
+    ui->horizontalScrollBarD2Tension->setValue(normalizeSliderValue(env.e2.getDecayTension(), ui->horizontalScrollBarD2Tension->maximum()));
     ui->comboBoxD2Type->setCurrentIndex(static_cast<int>(env.e2.getType()));
 
     refreshWaveformEnvelope(type);

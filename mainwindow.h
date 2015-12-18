@@ -14,9 +14,11 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
 
 private slots:
     // Render
@@ -34,15 +36,26 @@ private slots:
     void on_horizontalScrollBarMod_valueChanged(int value);
 
     // Misc
+    void on_counterDuration_valueChanged(double value);
     void on_spinBoxSampleRate_valueChanged(int arg1);
 
     // Envelope
     void on_pushButtonEnvelopeAmp_clicked();
     void on_pushButtonEnvelopeShape_clicked();
     void on_pushButtonEnvelopePitch_clicked();
+    void on_horizontalScrollBarD1Gain_valueChanged(int value);
+    void on_horizontalScrollBarD1Time_valueChanged(int value);
+    void on_horizontalScrollBarD1Tension_valueChanged(int value);
+    void on_comboBoxD1Type_currentIndexChanged(const QString &arg1);
+    void on_horizontalScrollBarD2Gain_valueChanged(int value);
+    void on_horizontalScrollBarD2Time_valueChanged(int value);
+    void on_horizontalScrollBarD2Tension_valueChanged(int value);
+    void on_comboBoxD2Type_currentIndexChanged(const QString &arg1);
+
 
 protected:
     void resizeEvent(QResizeEvent *event);
+
 
 private:
     enum class EnvType : int
@@ -78,9 +91,10 @@ private:
 
     void setupWaveforms();
     int getNumberOfSamples();
+    float normalizeSliderInput(int value, int maximum);
+    int normalizeSliderValue(float value, int maximum);
 
     void setCurrentOperator(int op);
-    int normalizeSliderValue(float value, int maximum);
     void refreshOscillator();
 
     void setCurrentEnvelope(EnvType type);
