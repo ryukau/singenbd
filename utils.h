@@ -1,5 +1,4 @@
-﻿#ifndef UTILS_H
-#define UTILS_H
+﻿#pragma once
 
 #include <cmath>
 
@@ -59,5 +58,3 @@ public:
         return baseFreq * pow(freq, bend * bendCC);
     }
 };
-
-#endif // UTILS_H

@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     TaikoOperator.cpp \
     Envelope.cpp \
     Oscillator.cpp \
-    Filter/FixedPointDCBlocker.cpp
+    Filter/FixedPointDCBlocker.cpp \
+    DecayEnvelope.cpp
 
 HEADERS  += mainwindow.h \
     counter.h \
@@ -36,6 +37,7 @@ HEADERS  += mainwindow.h \
     Oscillator.h \
     BSplineCurve.h \
     Filter/Filter.h \
-    Filter/FixedPointDCBlocker.h
+    Filter/FixedPointDCBlocker.h \
+    DecayEnvelope.h
 
 FORMS    += mainwindow.ui
