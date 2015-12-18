@@ -71,7 +71,7 @@ private:
     void saveSound();
     void renderSound();
     void DcKill();
-    void Declick();
+    void Declick(int declickLength);
 
     void setupWaveforms();
     int getNumberOfSamples();

@@ -150,8 +150,9 @@ void MainWindow::renderSound()
 {
     int numSamples = getNumberOfSamples();
 
-    if (numSamples < 40)
-        numSamples = 40; // 最低サンプル数の保証
+    const int minSamples = 200;
+    if (numSamples < minSamples)
+        numSamples = minSamples; // 最低サンプル数の保証
 
     fmto.clearBuffer();
     waveSound.resize(numSamples);
@@ -165,7 +166,7 @@ void MainWindow::renderSound()
         DcKill();
 
     if (ui->checkBoxDeclick->isChecked())
-        Declick();
+        Declick(minSamples);
 }
 
 void MainWindow::DcKill()
@@ -178,9 +179,23 @@ void MainWindow::DcKill()
     }
 }
 
-void MainWindow::Declick()
+void MainWindow::Declick(int declickLength)
 {
+    for (int i = 0; i < declickLength && i < waveSound.size(); ++i)
+    {
+        float ratio = (float)i / declickLength;
+        waveSound[i] = ratio * waveSound[i];
+    }
 
+    for (int i = 0; i < declickLength; ++i)
+    {
+        int index = waveSound.size() - i - 1;
+        if (index < 0)
+            break;
+
+        float ratio = (float)i / declickLength;
+        waveSound[index] = ratio * waveSound[index];
+    }
 }
 
 void MainWindow::setupWaveforms()
