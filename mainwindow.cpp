@@ -8,6 +8,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , curOp(0)
+    , curEnv(EnvType::Amp)
 {
     ui->setupUi(this);
 
@@ -19,8 +21,97 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 //
 // private slots
+//
+
+
+// render //
+
+void MainWindow::on_pushButtonRender_clicked()
+{
+    renderSound();
+
+    soundPlayer.setWave(waveSound);
+    ui->waveformMain->refresh();
+    playSound();
+}
+
+void MainWindow::on_pushButtonPlay_clicked()
+{
+    playSound();
+}
+
+void MainWindow::on_pushButtonSave_clicked()
+{
+    saveSound();
+}
+
+
+// Oscillator //
+
+void MainWindow::on_pushButtonOscillator1_clicked()
+{
+    curOp = 0;
+}
+
+void MainWindow::on_pushButtonOscillator2_clicked()
+{
+    curOp = 1;
+}
+
+void MainWindow::on_pushButtonOscillator3_clicked()
+{
+    curOp = 2;
+}
+
+void MainWindow::on_counterPitch_valueChanged(double value)
+{
+    fmto.op(curOp).setFrequency(value);
+}
+
+void MainWindow::on_comboBoxOscType_currentIndexChanged(const QString &arg1)
+{
+    if (arg1.contains("Sin"))
+        fmto.op(curOp).osc.setType(Oscillator::OscillatorType::Sin);
+    else if (arg1.contains("Saw"))
+        fmto.op(curOp).osc.setType(Oscillator::OscillatorType::Saw);
+    else if (arg1.contains("Square"))
+        fmto.op(curOp).osc.setType(Oscillator::OscillatorType::Square);
+}
+
+void MainWindow::on_horizontalScrollBarPhase_valueChanged(int value)
+{
+    fmto.op(curOp).osc.setPhaseOffset(value / (float)ui->horizontalScrollBarPhase->maximum());
+}
+
+void MainWindow::on_horizontalScrollBarMod_valueChanged(int value)
+{
+    fmto.op(curOp).setModIndex(value / (float)ui->horizontalScrollBarMod->maximum());
+}
+
+
+// Envelope //
+
+void MainWindow::on_pushButtonEnvelopeAmp_clicked()
+{
+    curEnv = EnvType::Amp;
+}
+
+void MainWindow::on_pushButtonEnvelopeShape_clicked()
+{
+    curEnv = EnvType::Shape;
+}
+
+void MainWindow::on_pushButtonEnvelopePitch_clicked()
+{
+    curEnv = EnvType::Pitch;
+}
+
+
+//
+// private
 //
 
 void MainWindow::playSound()
@@ -61,29 +152,6 @@ void MainWindow::renderSound()
         //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
 }
-
-void MainWindow::on_pushButtonRender_clicked()
-{
-    renderSound();
-
-    soundPlayer.setWave(waveSound);
-    ui->waveformMain->refresh();
-    playSound();
-}
-
-void MainWindow::on_pushButtonPlay_clicked()
-{
-    playSound();
-}
-
-void MainWindow::on_pushButtonSave_clicked()
-{
-    saveSound();
-}
-
-//
-// private
-//
 
 void MainWindow::setupWaveforms()
 {

@@ -117,7 +117,23 @@
         </widget>
        </item>
        <item row="2" column="1" colspan="2">
-        <widget class="QComboBox" name="comboBoxOscType"/>
+        <widget class="QComboBox" name="comboBoxOscType">
+         <item>
+          <property name="text">
+           <string>Sin</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Saw</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Square</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="3" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarPhase">
@@ -339,7 +355,28 @@
         </widget>
        </item>
        <item row="9" column="1" colspan="2">
-        <widget class="QComboBox" name="comboBoxD2Type"/>
+        <widget class="QComboBox" name="comboBoxD2Type">
+         <item>
+          <property name="text">
+           <string>BSplineSmooth</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>BSpline</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Exponential</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Linear</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="7" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarD2Tension">
@@ -364,7 +401,28 @@
         </widget>
        </item>
        <item row="8" column="1" colspan="2">
-        <widget class="QComboBox" name="comboBoxD1Type"/>
+        <widget class="QComboBox" name="comboBoxD1Type">
+         <item>
+          <property name="text">
+           <string>BSplineSmooth</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>BSpline</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Exponential</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Linear</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="6" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarDecay2">

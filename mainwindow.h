@@ -18,17 +18,36 @@ public:
     ~MainWindow();
 
 private slots:
-
-    void playSound();
-    void saveSound();
-    void renderSound();
-
+    // render
     void on_pushButtonRender_clicked();
+    void on_pushButtonPlay_clicked();
     void on_pushButtonSave_clicked();
 
-    void on_pushButtonPlay_clicked();
+    // oscillator
+    void on_pushButtonOscillator1_clicked();
+    void on_pushButtonOscillator2_clicked();
+    void on_pushButtonOscillator3_clicked();
+    void on_counterPitch_valueChanged(double value);
+    void on_comboBoxOscType_currentIndexChanged(const QString &arg1);
+    void on_horizontalScrollBarPhase_valueChanged(int value);
+    void on_horizontalScrollBarMod_valueChanged(int value);
+
+    void on_pushButtonEnvelopeAmp_clicked();
+
+    void on_pushButtonEnvelopeShape_clicked();
+
+    void on_pushButtonEnvelopePitch_clicked();
 
 private:
+    enum class EnvType : int
+    {
+        Amp = 0,
+        Pitch,
+        Shape,
+        End,
+        Begin = 0,
+    };
+
     Ui::MainWindow *ui;
 
     // 機能
@@ -39,7 +58,15 @@ private:
     QVector<float> waveSound;
     QVector<float> waveEnvelope;
 
+    // UIの状態
+    int curOp;
+    EnvType curEnv;
+
     // 関数
+    void playSound();
+    void saveSound();
+    void renderSound();
+
     void setupWaveforms();
     int getNumberOfSamples();
 };
