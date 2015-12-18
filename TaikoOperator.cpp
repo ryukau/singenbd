@@ -6,7 +6,7 @@
 
 TaikoOperator::TaikoOperator()
     : mute(false)
-    , frequency(0.0)
+    , interval(0.0)
     , modIndex(0.0)
     , buffer(0.0)
     , phase(0.0)
@@ -27,7 +27,7 @@ TaikoOperator& TaikoOperator::operator=(TaikoOperator &op)
     envAmp = op.envAmp;
     envPitch = op.envPitch;
     envShape = op.envShape;
-    frequency = op.frequency;
+    interval = op.interval;
     modIndex = op.modIndex;
 
     return *this;
@@ -43,9 +43,9 @@ void TaikoOperator::setModInput(float input)
     this->input = input;
 }
 
-void TaikoOperator::setFrequency(float freq)
+void TaikoOperator::setPitch(float cent)
 {
-    frequency = freq;
+    interval = cent;
 }
 
 void TaikoOperator::setModIndex(float index)
@@ -77,7 +77,7 @@ float TaikoOperator::render(float time)
     osc.setShape(envShape.at(time));
 
     // PM変調
-    phase += (frequency + (PitchCalc::intervalToFreq(envPitch.at(time) * 24000))) / SampleRate::get();
+    phase += PitchCalc::intervalToFreq(interval + envPitch.at(time) * 12800.0f) / SampleRate::get();
 
     buffer = envAmp.at(time) * osc.Oscillation(phase + 8 * modIndex * input);
 

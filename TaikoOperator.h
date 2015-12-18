@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "Oscillator.h"
-#include "Envelope.h"
+#include "DecayEnvelope.h"
 
 class TaikoOperator
 {
@@ -14,12 +14,12 @@ public:
     bool mute;
 
     Oscillator osc;
-    Envelope envAmp;
+    DecayEnvelope envAmp;
     Envelope envPitch;
-    Envelope envShape;
+    DecayEnvelope envShape;
 
     void setModInput(float input);
-    void setFrequency(float freq);
+    void setPitch(float cent);
     void setModIndex(float index);
     void clearBuffer();
     void clearBuffer(float phase);
@@ -29,7 +29,7 @@ private:
     float buffer;
     float phase;
     float input;
-    float frequency;
+    float interval;
     float modIndex;
 };
 
