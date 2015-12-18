@@ -5,9 +5,9 @@
 #include <QDateTime>
 #include "utils.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -53,7 +53,10 @@ void MainWindow::on_pushButtonRender_clicked()
     soundPlayer.setWave(waveSound);
     ui->waveformMain->refresh();
     playSound();
+}
 
+void MainWindow::on_pushButtonSave_clicked()
+{
     saveSound();
 }
 
@@ -79,5 +82,6 @@ void MainWindow::renderSinewave()
         waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
 }
+
 
 

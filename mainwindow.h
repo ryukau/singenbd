@@ -20,16 +20,21 @@ private slots:
 
     void playSound();
     void saveSound();
+
     void on_pushButtonRender_clicked();
+    void on_pushButtonSave_clicked();
 
 private:
     Ui::MainWindow *ui;
 
+    // 追加機能
     SoundPlayer soundPlayer;
 
+    // 音データ
     QVector<float> waveSound;
     QVector<float> waveEnvelope;
 
+    // 関数
     void setupWaveforms();
     void renderSinewave();
 };
