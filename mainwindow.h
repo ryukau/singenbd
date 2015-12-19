@@ -25,11 +25,13 @@ private slots:
     void on_pushButtonRender_clicked();
     void on_pushButtonPlay_clicked();
     void on_pushButtonSave_clicked();
+    void on_pushButtonRandom_clicked();
 
     // Oscillator
     void on_pushButtonOscillator1_clicked();
     void on_pushButtonOscillator2_clicked();
     void on_pushButtonOscillator3_clicked();
+    void on_pushButtonOscillatorSub_clicked();
     void on_counterPitch_valueChanged(double value);
     void on_comboBoxOscType_currentIndexChanged(const QString &arg1);
     void on_horizontalScrollBarPhase_valueChanged(int value);
@@ -75,7 +77,6 @@ private slots:
     void on_actionCopyEnvelope_triggered();
     void on_actionPasteEnvelope_triggered();
 
-    void on_pushButtonOscillatorSub_clicked();
 
 protected:
     void resizeEvent(QResizeEvent *event);

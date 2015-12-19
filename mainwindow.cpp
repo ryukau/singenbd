@@ -1,6 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <random>
 #include <QDir>
 #include <QDateTime>
 #include <QSettings>
@@ -65,6 +66,82 @@ void MainWindow::on_pushButtonPlay_clicked()
 void MainWindow::on_pushButtonSave_clicked()
 {
     saveSound();
+}
+
+void MainWindow::on_pushButtonRandom_clicked()
+{
+    //std::random_device rnd; // DebugビルドにするとここでR6010がでてabort()
+    std::mt19937 mt(10);//rnd());
+
+    std::uniform_real_distribution<float> dist(0.0, 1.0);
+    std::uniform_real_distribution<float> distPitch(0.0, 128.0);
+    std::uniform_int_distribution<int> distEnvelopeType((int)Envelope::Type::Begin, (int)Envelope::Type::End - 1);
+    std::uniform_int_distribution<int> distOscType((int)Oscillator::OscillatorType::Begin, (int)Oscillator::OscillatorType::End - 1);
+
+    if (ui->checkBoxDuration->isChecked())
+    {
+        std::uniform_real_distribution<float> distDuration(0.0, 4.0);
+        fmto.setDuration(distDuration(mt));
+    }
+
+    if (ui->checkBoxSampleRate->isChecked())
+    {
+        std::uniform_int_distribution<int> distSampleRate(100, 48000);
+        SampleRate::set(distSampleRate(mt));
+    }
+
+    if (ui->checkBoxSuperSampling->isChecked())
+    {
+        //std::uniform_int_distribution<int> distSuperSampling(,);
+
+        //
+        // 未実装
+        //
+    }
+
+    for (int op = 0; op < fmto.maxOp(); ++op)
+    {
+        if (ui->checkBoxPitch->isChecked())
+            fmto.op(op).setPitch(distPitch(mt));
+
+        if (ui->checkBoxOscType->isChecked())
+            fmto.op(op).osc.setType((Oscillator::OscillatorType)distOscType(mt));
+
+        if (ui->checkBoxPhase->isChecked())
+            fmto.op(op).osc.setPhaseOffset(dist(mt));
+
+        if (ui->checkBoxPhase->isChecked())
+            fmto.op(op).setModIndex(dist(mt));
+
+        for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
+        {
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]   )
+                getEnvelopeType(op, (EnvType)env).e1.setGain(dist(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]   )
+                getEnvelopeType(op, (EnvType)env).e1.setDecayTime(dist(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension])
+                getEnvelopeType(op, (EnvType)env).e1.setDecayTension(dist(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]   )
+                getEnvelopeType(op, (EnvType)env).e1.setType((Envelope::Type)distEnvelopeType(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]   )
+                getEnvelopeType(op, (EnvType)env).e2.setGain(dist(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]   )
+                getEnvelopeType(op, (EnvType)env).e2.setDecayTime(dist(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension])
+                getEnvelopeType(op, (EnvType)env).e2.setDecayTension(dist(mt));
+
+            if(randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]   )
+                getEnvelopeType(op, (EnvType)env).e2.setType((Envelope::Type)distEnvelopeType(mt));
+        }
+    }
+
+    refresh();
 }
 
 

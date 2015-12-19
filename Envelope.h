@@ -10,7 +10,8 @@ public:
         BSpline,
         Exponential,
         Linear,
-        Last,
+        End,
+        Begin = 0,
     };
 
 public:

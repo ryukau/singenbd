@@ -9,7 +9,8 @@ public:
         Sin = 0,
         Saw,
         Square,
-        Last,
+        End,
+        Begin = 0,
     };
 
 public:
