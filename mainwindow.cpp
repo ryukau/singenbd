@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     , curOp(0)
     , curEnv(EnvType::Amp)
     , tempValue(0.0)
+    , superSampling(1)
 {
     ui->setupUi(this);
 
@@ -92,11 +93,8 @@ void MainWindow::on_pushButtonRandom_clicked()
 
     if (ui->checkBoxSuperSampling->isChecked())
     {
-        //std::uniform_int_distribution<int> distSuperSampling(,);
-
-        //
-        // 未実装
-        //
+        std::uniform_int_distribution<int> distSuperSampling((int)SuperSampling::Begin, (int)SuperSampling::End - 1);
+        ui->comboBoxSuperSampling->setCurrentIndex(distSuperSampling(mt));
     }
 
     for (int op = 0; op < fmto.maxOp(); ++op)
@@ -208,6 +206,18 @@ void MainWindow::on_counterDuration_valueChanged(double value)
 void MainWindow::on_spinBoxSampleRate_valueChanged(int arg1)
 {
     SampleRate::set(arg1);
+}
+
+void MainWindow::on_comboBoxSuperSampling_currentIndexChanged(const QString &arg1)
+{
+    if (arg1.contains("x128"))
+        superSampling = 128;
+    else if (arg1.contains("x32"))
+        superSampling = 32;
+    else if (arg1.contains("x8"))
+        superSampling = 8;
+    else if (arg1.contains("x1"))
+        superSampling = 1;
 }
 
 
@@ -641,9 +651,16 @@ void MainWindow::renderSound()
 
     fmto.clearBuffer();
     waveSound.resize(numSamples);
+
+    float tt = 1.0f / (superSampling * SampleRate::get());
     for (int i = 0; i < numSamples; ++i)
     {
-        waveSound[i] = fmto.render((float)i / SampleRate::get());
+        float temp = 0.0f;
+        for (int ss = 0; ss < superSampling; ++ss)
+        {
+            temp += fmto.render((i * superSampling + ss) * (tt));
+        }
+        waveSound[i] = temp / superSampling;
         //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
 

@@ -148,7 +148,7 @@
           <number>48000</number>
          </property>
          <property name="singleStep">
-          <number>1000</number>
+          <number>48000</number>
          </property>
          <property name="value">
           <number>48000</number>
@@ -163,7 +163,28 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="comboBoxSuperSampling"/>
+        <widget class="QComboBox" name="comboBoxSuperSampling">
+         <item>
+          <property name="text">
+           <string>x1</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x8</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x32</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>x128</string>
+          </property>
+         </item>
+        </widget>
        </item>
        <item row="3" column="0">
         <widget class="QCheckBox" name="checkBoxDcBlock">

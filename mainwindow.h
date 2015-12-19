@@ -41,6 +41,7 @@ private slots:
     // Misc
     void on_counterDuration_valueChanged(double value);
     void on_spinBoxSampleRate_valueChanged(int arg1);
+    void on_comboBoxSuperSampling_currentIndexChanged(const QString &arg1);
 
     // Envelope
     void on_pushButtonEnvelopeAmp_clicked();
@@ -106,6 +107,16 @@ private:
         Begin = 0,
     };
 
+    enum class SuperSampling : int
+    {
+        x1 = 0,
+        x8,
+        x32,
+        x128,
+        End,
+        Begin = 0,
+    };
+
     Ui::MainWindow *ui;
 
     // 機能
@@ -121,6 +132,7 @@ private:
     int curOp;
     EnvType curEnv;
     QVector<QVector<bool>> randomizeSettingsEnvelope;
+    int superSampling;
     double tempValue;
     DecayEnvelope tempEnv;
     TaikoOperator tempOp;
