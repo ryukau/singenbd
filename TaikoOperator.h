@@ -25,7 +25,7 @@ public:
     void setModIndex(float index);
     void clearBuffer();
     void clearBuffer(float phase);
-    float render(float time);
+    float render(float time, float deltaTime);
 
 private:
     float buffer;

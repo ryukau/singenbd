@@ -24,7 +24,7 @@ public:
     void setDuration(float dur);
 
     void clearBuffer();
-    float render(float time);
+    float render(float time, float deltaTime);
 
     int maxOp();
 

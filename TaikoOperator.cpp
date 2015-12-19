@@ -79,7 +79,7 @@ void TaikoOperator::clearBuffer(float phase)
 }
 
 
-float TaikoOperator::render(float time)
+float TaikoOperator::render(float time, float deltaTime)
 {
     if (mute)
         return 0.0;
@@ -87,7 +87,7 @@ float TaikoOperator::render(float time)
     osc.setShape(envShape.at(time));
 
     // PM変調
-    phase += PitchCalc::intervalToFreq(interval * 100.0f + envPitch.at(time) * 12800.0f) / SampleRate::get();
+    phase += PitchCalc::intervalToFreq(interval * 100.0f + envPitch.at(time) * 12800.0f) * deltaTime;// SampleRate::get();
 
     buffer = envAmp.at(time) * osc.Oscillation(phase + 8 * modIndex * input);
 

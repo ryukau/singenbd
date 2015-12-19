@@ -658,7 +658,7 @@ void MainWindow::renderSound()
         float temp = 0.0f;
         for (int ss = 0; ss < superSampling; ++ss)
         {
-            temp += fmto.render((i * superSampling + ss) * (tt));
+            temp += fmto.render((i * superSampling + ss) * (tt), tt);
         }
         waveSound[i] = temp / superSampling;
         //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
