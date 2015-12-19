@@ -26,6 +26,8 @@ public:
     void clearBuffer();
     float render(float time);
 
+    int maxOp();
+
 private:
     std::deque<TaikoOperator> fmto;
     std::deque<float> out;

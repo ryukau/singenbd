@@ -85,6 +85,11 @@ void MainWindow::on_pushButtonOscillator3_clicked()
     setCurrentOperator(2);
 }
 
+void MainWindow::on_pushButtonOscillatorSub_clicked()
+{
+    setCurrentOperator(3);
+}
+
 void MainWindow::on_counterPitch_valueChanged(double value)
 {
     fmto.op(curOp).setPitch(value);
@@ -318,6 +323,8 @@ void MainWindow::on_actionCopyOscillator_triggered()
         tempOp = fmto.op(1);
     else if (name.contains("3"))
         tempOp = fmto.op(2);
+    else if (name.contains("Sub"))
+        tempOp = fmto.op(3);
 }
 
 void MainWindow::on_actionPasteOscillator_triggered()
@@ -330,6 +337,8 @@ void MainWindow::on_actionPasteOscillator_triggered()
         fmto.op(1) = tempOp;
     else if (name.contains("3"))
         fmto.op(2) = tempOp;
+    else if (name.contains("Sub"))
+        fmto.op(3) = tempOp;
 
     refreshOscillator();
 }
@@ -371,7 +380,9 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
 
-    waveEnvelope.resize(ui->waveformEnvelope->width());
+    int size = ui->waveformEnvelope->width() < 512 ? 512 : ui->waveformEnvelope->width();
+    waveEnvelope.resize(size);
+    refreshWaveformEnvelope(curEnv);
     ui->waveformEnvelope->refresh();
 }
 
@@ -421,7 +432,7 @@ void MainWindow::saveSettings(QString fileName)
     settings.setValue("WaveFilePrefix", ui->lineEditFilePrefix->text());
 
     // oscillator, envelope
-    for (int op = 0; op < 3; ++op)
+    for (int op = 0; op < fmto.maxOp(); ++op)
     {
         QString opPrefix = QString("Op%1/").arg(op);
 
@@ -491,7 +502,7 @@ void MainWindow::loadSettings(QString fileName)
     ui->lineEditFilePrefix->setText(settings.value("WaveFilePrefix").toString());
 
     // oscillator, envelope
-    for (int op = 0; op < 3; ++op)
+    for (int op = 0; op < fmto.maxOp(); ++op)
     {
         QString opPrefix = QString("Op%1/").arg(op);
 
@@ -599,6 +610,9 @@ void MainWindow::Declick(int declickLength)
 void MainWindow::setupWaveforms()
 {
     ui->waveformMain->setWave(&waveSound);
+
+    int size = ui->waveformEnvelope->width() < 512 ? 512 : ui->waveformEnvelope->width();
+    waveEnvelope.resize(size);
     ui->waveformEnvelope->setWave(&waveEnvelope);
 }
 
@@ -613,9 +627,6 @@ void MainWindow::setupContextMenu()
     ui->counterDuration->addActions(actionListSlider);
     ui->horizontalScrollBarPhase->addActions(actionListSlider);
     ui->horizontalScrollBarMod->addActions(actionListSlider);
-    ui->horizontalScrollBarSubOscGain->addActions(actionListSlider);
-    ui->horizontalScrollBarSubOscDetune->addActions(actionListSlider);
-    ui->horizontalScrollBarSubOscPhase->addActions(actionListSlider);
     ui->horizontalScrollBarD1Gain->addActions(actionListSlider);
     ui->horizontalScrollBarD1Time->addActions(actionListSlider);
     ui->horizontalScrollBarD1Tension->addActions(actionListSlider);
@@ -640,6 +651,7 @@ void MainWindow::setupContextMenu()
     ui->pushButtonOscillator1->addActions(actionListOscillator);
     ui->pushButtonOscillator2->addActions(actionListOscillator);
     ui->pushButtonOscillator3->addActions(actionListOscillator);
+    ui->pushButtonOscillatorSub->addActions(actionListOscillator);
 }
 
 int MainWindow::getNumberOfSamples()

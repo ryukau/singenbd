@@ -3,10 +3,10 @@
 #include <cassert>
 
 FMTOComplex::FMTOComplex()
-    : numMaxOp(3)
+    : numMaxOp(4)
+    , fmto(4)
+    , out(4)
     , _duration(0.160f)
-    , fmto(3)
-    , out(3)
 {
 }
 
@@ -56,5 +56,10 @@ float FMTOComplex::render(float time)
         out[i] = fmto[i].render(time / _duration);
     }
 
-    return out[0];
+    return out[0] + out[3];
+}
+
+int FMTOComplex::maxOp()
+{
+    return numMaxOp;
 }

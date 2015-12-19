@@ -75,6 +75,8 @@ private slots:
     void on_actionCopyEnvelope_triggered();
     void on_actionPasteEnvelope_triggered();
 
+    void on_pushButtonOscillatorSub_clicked();
+
 protected:
     void resizeEvent(QResizeEvent *event);
 
