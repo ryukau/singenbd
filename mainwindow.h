@@ -34,6 +34,7 @@ private slots:
     void on_comboBoxOscType_currentIndexChanged(const QString &arg1);
     void on_horizontalScrollBarPhase_valueChanged(int value);
     void on_horizontalScrollBarMod_valueChanged(int value);
+    void on_checkBoxMute_toggled(bool checked);
 
     // Misc
     void on_counterDuration_valueChanged(double value);
@@ -66,7 +67,13 @@ private slots:
     void on_pushButtonSaveIni_clicked();
     void on_pushButtonLoadIni_clicked();
 
-    void on_checkBoxMute_toggled(bool checked);
+    // Actions
+    void on_actionCopyValue_triggered();
+    void on_actionPasteValue_triggered();
+    void on_actionCopyOscillator_triggered();
+    void on_actionPasteOscillator_triggered();
+    void on_actionCopyEnvelope_triggered();
+    void on_actionPasteEnvelope_triggered();
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -111,6 +118,9 @@ private:
     int curOp;
     EnvType curEnv;
     QVector<QVector<bool>> randomizeSettingsEnvelope;
+    double tempValue;
+    Envelope tempEnv;
+    TaikoOperator tempOp;
 
     // 関数
     void saveSettings(QString fileName);
@@ -123,6 +133,7 @@ private:
     void Declick(int declickLength);
 
     void setupWaveforms();
+    void setupContextMenu();
     int getNumberOfSamples();
     float normalizeSliderInput(int value, int maximum);
     int normalizeSliderValue(float value, int maximum);

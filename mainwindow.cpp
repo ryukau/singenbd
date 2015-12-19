@@ -24,14 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //
     setupWaveforms();
-
-    // context menu slider
-    QList<QAction*> actionListSlider;
-    //actionListSlider.append(ui->actionCopyValue);
-    //actionListSlider.append(ui->actionPasteValue);
-
-    ui->counterPitch->addActions(actionListSlider);
-    ui->counterDuration->addActions(actionListSlider);
+    setupContextMenu();
 
     // load ini
     if (!QFile::exists(defaultIniFile))
@@ -280,6 +273,95 @@ void MainWindow::on_pushButtonLoadIni_clicked()
 }
 
 
+// Actions //
+
+void MainWindow::on_actionCopyValue_triggered()
+{
+    // 一時保存される値は[0.0, 1.0]の範囲に正規化される
+
+    Counter *counter = dynamic_cast<Counter*>(focusWidget());
+    if (counter)
+    {
+        tempValue = counter->value() / counter->maximum();
+    }
+
+    QScrollBar *scrollBar = dynamic_cast<QDoubleSpinBox*>(focusWidget());
+    if (doubleSpinBox)
+    {
+        tempValue = (double)scrollBar->value() / scrollBar->maximum();
+    }
+}
+
+void MainWindow::on_actionPasteValue_triggered()
+{
+    Counter *counter = dynamic_cast<Counter*>(focusWidget());
+    if (counter)
+    {
+        counter->setValue(tempValue * counter->maximum());
+    }
+
+    QScrollBar *scrollBar = dynamic_cast<QDoubleSpinBox*>(focusWidget());
+    if (doubleSpinBox)
+    {
+        scrollBar->setValue(static_cast<int>(tempValue * scrollBar->maximum()));
+    }
+}
+
+void MainWindow::on_actionCopyOscillator_triggered()
+{
+    QString name = focusWidget()->objectName();
+
+    if (name.contains("1"))
+        tempOp = fmto.op(0);
+    else if (name.contains("2"))
+        tempOp = fmto.op(1);
+    else if (name.contains("3"))
+        tempOp = fmto.op(2);
+}
+
+void MainWindow::on_actionPasteOscillator_triggered()
+{
+    QString name = focusWidget()->objectName();
+
+    if (name.contains("1"))
+        fmto.op(0) = tempOp;
+    else if (name.contains("2"))
+        fmto.op(1) = tempOp;
+    else if (name.contains("3"))
+        fmto.op(2) = tempOp;
+
+    refreshOscillator();
+}
+
+void MainWindow::on_actionCopyEnvelope_triggered()
+{
+    QString type = focusWidget()->objectName();
+
+    if (type.contains("Amp"))
+        tempEnv = getEnvelopeType(curOp, EnvType::Amp);
+    else if (type.contains("Shape"))
+        tempEnv = getEnvelopeType(curOp, EnvType::Shape);
+    else if (type.contains("Pitch"))
+        tempEnv = getEnvelopeType(curOp, EnvType::Pitch);
+}
+
+void MainWindow::on_actionPasteEnvelope_triggered()
+{
+    QString type = focusWidget()->objectName();
+
+    if (type.contains("Amp"))
+        getEnvelopeType(curOp, EnvType::Amp) = tempEnv;
+    else if (type.contains("Shape"))
+        getEnvelopeType(curOp, EnvType::Shape) = tempEnv;
+    else if (type.contains("Pitch"))
+        getEnvelopeType(curOp, EnvType::Pitch) = tempEnv;
+
+    refreshEnvelope(curEnv);
+}
+
+
+
+
 //
 // protected events
 //
@@ -517,6 +599,46 @@ void MainWindow::setupWaveforms()
 {
     ui->waveformMain->setWave(&waveSound);
     ui->waveformEnvelope->setWave(&waveEnvelope);
+}
+
+void MainWindow::setupContextMenu()
+{
+    // context menu slider
+    QList<QAction*> actionListSlider;
+    actionListSlider.append(ui->actionCopyValue);
+    actionListSlider.append(ui->actionPasteValue);
+
+    ui->counterPitch->addActions(actionListSlider);
+    ui->counterDuration->addActions(actionListSlider);
+    ui->horizontalScrollBarPhase->addActions(actionListSlider);
+    ui->horizontalScrollBarMod->->addActions(actionListSlider);
+    ui->horizontalScrollBarSubOscGain->addActions(actionListSlider);
+    ui->horizontalScrollBarSubOscDetune->addActions(actionListSlider);
+    ui->horizontalScrollBarSubOscPhase->addActions(actionListSlider);
+    ui->horizontalScrollBarD1Gain->addActions(actionListSlider);
+    ui->horizontalScrollBarD1Time->addActions(actionListSlider);
+    ui->horizontalScrollBarD1Tension->addActions(actionListSlider);
+    ui->horizontalScrollBarD2Gain->addActions(actionListSlider);
+    ui->horizontalScrollBarD2Time->addActions(actionListSlider);
+    ui->horizontalScrollBarD2Tension->addActions(actionListSlider);
+
+    // context menu envelope
+    QList<QAction*> actionListEnvelope;
+    actionListEnvelope.append(ui->actionCopyEnvelope);
+    actionListEnvelope.append(ui->actionPasteEnvelope);
+
+    ui->pushButtonEnvelopeAmp->addActions(actionListEnvelope);
+    ui->pushButtonEnvelopeShape->addActions(actionListEnvelope);
+    ui->pushButtonEnvelopePitch->addActions(actionListEnvelope);
+
+    // context menu operator
+    QList<QAction*> actionListOscillator;
+    actionListOperator.append(ui->actionCopyOscillator);
+    actionListOperator.append(ui->actionPasteOscillator);
+
+    ui->pushButtonOscillator1->addActions(actionListOscillator);
+    ui->pushButtonOscillator2->addActions(actionListOscillator);
+    ui->pushButtonOscillator3->addActions(actionListOscillator);
 }
 
 int MainWindow::getNumberOfSamples()
