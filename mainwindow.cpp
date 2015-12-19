@@ -285,8 +285,8 @@ void MainWindow::on_actionCopyValue_triggered()
         tempValue = counter->value() / counter->maximum();
     }
 
-    QScrollBar *scrollBar = dynamic_cast<QDoubleSpinBox*>(focusWidget());
-    if (doubleSpinBox)
+    QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(focusWidget());
+    if (scrollBar)
     {
         tempValue = (double)scrollBar->value() / scrollBar->maximum();
     }
@@ -300,8 +300,8 @@ void MainWindow::on_actionPasteValue_triggered()
         counter->setValue(tempValue * counter->maximum());
     }
 
-    QScrollBar *scrollBar = dynamic_cast<QDoubleSpinBox*>(focusWidget());
-    if (doubleSpinBox)
+    QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(focusWidget());
+    if (scrollBar)
     {
         scrollBar->setValue(static_cast<int>(tempValue * scrollBar->maximum()));
     }
@@ -611,7 +611,7 @@ void MainWindow::setupContextMenu()
     ui->counterPitch->addActions(actionListSlider);
     ui->counterDuration->addActions(actionListSlider);
     ui->horizontalScrollBarPhase->addActions(actionListSlider);
-    ui->horizontalScrollBarMod->->addActions(actionListSlider);
+    ui->horizontalScrollBarMod->addActions(actionListSlider);
     ui->horizontalScrollBarSubOscGain->addActions(actionListSlider);
     ui->horizontalScrollBarSubOscDetune->addActions(actionListSlider);
     ui->horizontalScrollBarSubOscPhase->addActions(actionListSlider);
@@ -633,8 +633,8 @@ void MainWindow::setupContextMenu()
 
     // context menu operator
     QList<QAction*> actionListOscillator;
-    actionListOperator.append(ui->actionCopyOscillator);
-    actionListOperator.append(ui->actionPasteOscillator);
+    actionListOscillator.append(ui->actionCopyOscillator);
+    actionListOscillator.append(ui->actionPasteOscillator);
 
     ui->pushButtonOscillator1->addActions(actionListOscillator);
     ui->pushButtonOscillator2->addActions(actionListOscillator);

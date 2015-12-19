@@ -119,7 +119,7 @@ private:
     EnvType curEnv;
     QVector<QVector<bool>> randomizeSettingsEnvelope;
     double tempValue;
-    Envelope tempEnv;
+    DecayEnvelope tempEnv;
     TaikoOperator tempOp;
 
     // 関数

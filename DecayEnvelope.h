@@ -17,6 +17,8 @@ public:
     DecayEnvelope();
     ~DecayEnvelope();
 
+    DecayEnvelope& operator=(DecayEnvelope& env);
+
     float at(float time);
 
     Envelope e1;
