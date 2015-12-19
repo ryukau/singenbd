@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
     , curOp(0)
     , curEnv(EnvType::Amp)
+    , tempValue(0.0)
 {
     ui->setupUi(this);
 
@@ -285,7 +286,7 @@ void MainWindow::on_actionCopyValue_triggered()
         tempValue = counter->value() / counter->maximum();
     }
 
-    QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(focusWidget());
+    QAbstractSlider *scrollBar = dynamic_cast<QAbstractSlider*>(focusWidget());
     if (scrollBar)
     {
         tempValue = (double)scrollBar->value() / scrollBar->maximum();
@@ -300,7 +301,7 @@ void MainWindow::on_actionPasteValue_triggered()
         counter->setValue(tempValue * counter->maximum());
     }
 
-    QScrollBar *scrollBar = dynamic_cast<QScrollBar*>(focusWidget());
+    QAbstractSlider *scrollBar = dynamic_cast<QAbstractSlider*>(focusWidget());
     if (scrollBar)
     {
         scrollBar->setValue(static_cast<int>(tempValue * scrollBar->maximum()));
