@@ -4,7 +4,7 @@
 
 FMTOComplex::FMTOComplex()
     : numMaxOp(3)
-    , _duration(1.0)
+    , _duration(0.160)
     , fmto(3)
     , out(3)
 {

@@ -9,7 +9,7 @@ const float expEps = 0.001f; // expCurveの計算終了値
 
 
 Envelope::Envelope()
-    : Gain(0.5f)
+    : Gain(0.0f)
     , DecayTime(1.0f)
     , DecayTension(0.2f)
     , envType(Type::BSplineSmooth)

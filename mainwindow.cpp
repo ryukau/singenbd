@@ -6,6 +6,8 @@
 #include <QSettings>
 #include "utils.h"
 
+const QString defaultIniFile = "temp.ini";
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -20,10 +22,17 @@ MainWindow::MainWindow(QWidget *parent)
         it.resize((int)EnvParams::End); // Envelope部の8つのパラメータ
 
     setupWaveforms();
+
+    // load ini
+    if (!QFile::exists(defaultIniFile))
+        saveSettings(defaultIniFile);
+
+    loadSettings(defaultIniFile);
 }
 
 MainWindow::~MainWindow()
 {
+    saveSettings(defaultIniFile);
     delete ui;
 }
 
@@ -242,6 +251,20 @@ void MainWindow::on_checkBoxD2Type_toggled(bool checked)
 }
 
 
+// File //
+
+void MainWindow::on_pushButtonSaveIni_clicked()
+{
+    saveSettings(ui->lineEditFilePrefix->text() + ".ini");
+}
+
+void MainWindow::on_pushButtonLoadIni_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Load File"), QCoreApplication::applicationDirPath(), tr("INI Files (*.ini)"));
+    loadSettings(fileName);
+}
+
+
 //
 // protected events
 //
@@ -285,6 +308,115 @@ void MainWindow::saveSettings(QString fileName)
         settings.setValue("D2Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension]);
         settings.setValue("D2Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]);
     }
+
+    // misc
+    settings.setValue("Duration", static_cast<double>(fmto.duration()));
+    settings.setValue("SampleRate", static_cast<int>(SampleRate::get()));
+    //settings.setValue("SuperSampling", );
+    settings.setValue("DcBlock", ui->checkBoxDcBlock->isChecked());
+    settings.setValue("Declick", ui->checkBoxDeclick->isChecked());
+
+    // sub osc
+    // 何もできていない
+
+    // file
+    settings.setValue("WaveFilePrefix", ui->lineEditFilePrefix->text());
+
+    // oscillator, envelope
+    for (int op = 0; op < 3; ++op)
+    {
+        QString opPrefix = QString("Op%1/").arg(op);
+
+        settings.setValue(opPrefix + "Pitch",      static_cast<double>(fmto.op(op).getPitch()));
+        settings.setValue(opPrefix + "OscType",    static_cast<int>(fmto.op(op).osc.getType()));
+        settings.setValue(opPrefix + "Phase",      static_cast<double>(fmto.op(op).osc.getPhaseOffset()));
+        settings.setValue(opPrefix + "Modulation", static_cast<double>(fmto.op(op).getModIndex()));
+
+        for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
+        {
+            QString envPrefix = opPrefix + QString("Envelope%1/").arg(env);
+            DecayEnvelope denv = getEnvelopeType(op, (EnvType)env);
+
+            settings.setValue(envPrefix + "D1Gain",    static_cast<double>(denv.e1.getGain()        ));
+            settings.setValue(envPrefix + "D1Time",    static_cast<double>(denv.e1.getDecayTime()   ));
+            settings.setValue(envPrefix + "D1Tension", static_cast<double>(denv.e1.getDecayTension()));
+            settings.setValue(envPrefix + "D1Type",    static_cast<int>(denv.e1.getType()));
+            settings.setValue(envPrefix + "D2Gain",    static_cast<double>(denv.e2.getGain()        ));
+            settings.setValue(envPrefix + "D2Time",    static_cast<double>(denv.e2.getDecayTime()   ));
+            settings.setValue(envPrefix + "D2Tension", static_cast<double>(denv.e2.getDecayTension()));
+            settings.setValue(envPrefix + "D2Type",    static_cast<int>(denv.e2.getType()));
+        }
+    }
+}
+
+void MainWindow::loadSettings(QString fileName)
+{
+    if (!QFile::exists(fileName))
+        return;
+
+    QSettings settings(fileName, QSettings::IniFormat);
+
+    // randomize settings
+    ui->checkBoxPitch->setChecked(settings.value("Pitch/Random").toBool());
+    ui->checkBoxOscType->setChecked(settings.value("OscType/Random").toBool());
+    ui->checkBoxPhase->setChecked(settings.value("Phase/Random").toBool());
+    ui->checkBoxModulation->setChecked(settings.value("Modulation/Random").toBool());
+
+    ui->checkBoxDuration->setChecked(settings.value("Duration/Random").toBool());
+    ui->checkBoxSampleRate->setChecked(settings.value("SampleRate/Random").toBool());
+    ui->checkBoxSuperSampling->setChecked(settings.value("SuperSampling/Random").toBool());
+
+    for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
+    {
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]    = (settings.value("D1Gain/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]    = (settings.value("D1Time/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension] = (settings.value("D1Tension/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]    = (settings.value("D1Type/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]    = (settings.value("D2Gain/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]    = (settings.value("D2Time/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension] = (settings.value("D2Tension/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]    = (settings.value("D2Type/Random").toBool());
+    }
+
+    // misc
+    fmto.setDuration(settings.value("Duration").toDouble());
+    SampleRate::set(settings.value("SampleRate").toInt());
+    // SuperSampling
+    ui->checkBoxDcBlock->setChecked(settings.value("DcBlock").toBool());
+    ui->checkBoxDeclick->setChecked(settings.value("Declick").toBool());
+
+    // sub osc
+    // 何もできていない
+
+    // file
+    ui->lineEditFilePrefix->setText(settings.value("WaveFilePrefix").toString());
+
+    // oscillator, envelope
+    for (int op = 0; op < 3; ++op)
+    {
+        QString opPrefix = QString("Op%1/").arg(op);
+
+        fmto.op(op).setPitch(settings.value(opPrefix + "Pitch").toDouble());
+        fmto.op(op).osc.setType(static_cast<Oscillator::OscillatorType>(settings.value(opPrefix + "OscType").toInt()));
+        fmto.op(op).osc.setPhaseOffset(settings.value(opPrefix + "Phase").toDouble());
+        fmto.op(op).setModIndex(settings.value(opPrefix + "Modulation").toDouble());
+
+        for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
+        {
+            QString envPrefix = opPrefix + QString("Envelope%1/").arg(env);
+
+            getEnvelopeType(op, (EnvType)env).e1.setGain(   settings.value(envPrefix + "D1Gain"   ).toDouble());
+            getEnvelopeType(op, (EnvType)env).e1.setDecayTime(   settings.value(envPrefix + "D1Time"   ).toDouble());
+            getEnvelopeType(op, (EnvType)env).e1.setDecayTension(settings.value(envPrefix + "D1Tension").toDouble());
+            getEnvelopeType(op, (EnvType)env).e1.setType(static_cast<Envelope::Type>(settings.value(envPrefix + "D1Type"   ).toInt()));
+            getEnvelopeType(op, (EnvType)env).e2.setGain(   settings.value(envPrefix + "D2Gain"   ).toDouble());
+            getEnvelopeType(op, (EnvType)env).e2.setDecayTime(   settings.value(envPrefix + "D2Time"   ).toDouble());
+            getEnvelopeType(op, (EnvType)env).e2.setDecayTension(settings.value(envPrefix + "D2Tension").toDouble());
+            getEnvelopeType(op, (EnvType)env).e2.setType(static_cast<Envelope::Type>(settings.value(envPrefix + "D2Type"   ).toInt()));
+        }
+    }
+
+    refresh();
 }
 
 
@@ -385,6 +517,15 @@ float MainWindow::normalizeSliderInput(int value, int maximum)
 int MainWindow::normalizeSliderValue(float value, int maximum)
 {
     return static_cast<int>(value * static_cast<float>(maximum));
+}
+
+
+void MainWindow::refresh()
+{
+    ui->counterDuration->setValue(fmto.duration());
+    ui->spinBoxSampleRate->setValue(SampleRate::get());
+
+    refreshOscillator();
 }
 
 

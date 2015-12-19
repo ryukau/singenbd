@@ -62,6 +62,10 @@ private slots:
     void on_checkBoxD2Tension_toggled(bool checked);
     void on_checkBoxD2Type_toggled(bool checked);
 
+    // File
+    void on_pushButtonSaveIni_clicked();
+    void on_pushButtonLoadIni_clicked();
+
 protected:
     void resizeEvent(QResizeEvent *event);
 
@@ -108,6 +112,7 @@ private:
 
     // 関数
     void saveSettings(QString fileName);
+    void loadSettings(QString fileName);
 
     void playSound();
     void saveSound();
@@ -119,6 +124,8 @@ private:
     int getNumberOfSamples();
     float normalizeSliderInput(int value, int maximum);
     int normalizeSliderValue(float value, int maximum);
+
+    void refresh();
 
     void setCurrentOperator(int op);
     void refreshOscillator();
