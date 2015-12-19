@@ -43,6 +43,7 @@ private slots:
     void on_pushButtonEnvelopeAmp_clicked();
     void on_pushButtonEnvelopeShape_clicked();
     void on_pushButtonEnvelopePitch_clicked();
+
     void on_horizontalScrollBarD1Gain_valueChanged(int value);
     void on_horizontalScrollBarD1Time_valueChanged(int value);
     void on_horizontalScrollBarD1Tension_valueChanged(int value);
@@ -52,6 +53,14 @@ private slots:
     void on_horizontalScrollBarD2Tension_valueChanged(int value);
     void on_comboBoxD2Type_currentIndexChanged(const QString &arg1);
 
+    void on_checkBoxD1Gain_toggled(bool checked);
+    void on_checkBoxD1Time_toggled(bool checked);
+    void on_checkBoxD1Tension_toggled(bool checked);
+    void on_checkBoxD1Type_toggled(bool checked);
+    void on_checkBoxD2Gain_toggled(bool checked);
+    void on_checkBoxD2Time_toggled(bool checked);
+    void on_checkBoxD2Tension_toggled(bool checked);
+    void on_checkBoxD2Type_toggled(bool checked);
 
 protected:
     void resizeEvent(QResizeEvent *event);
@@ -63,6 +72,20 @@ private:
         Amp = 0,
         Pitch,
         Shape,
+        End,
+        Begin = 0,
+    };
+
+    enum class EnvParams : int
+    {
+        D1Gain = 0,
+        D1Time,
+        D1Tension,
+        D1Type,
+        D2Gain,
+        D2Time,
+        D2Tension,
+        D2Type,
         End,
         Begin = 0,
     };
@@ -81,6 +104,7 @@ private:
     // UIの状態
     int curOp;
     EnvType curEnv;
+    QVector<QVector<bool>> randomizeSettingsEnvelope;
 
     // 関数
     void saveSettings(QString fileName);

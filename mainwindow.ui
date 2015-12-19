@@ -283,6 +283,22 @@
        <string>Envelope</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_7">
+       <item row="7" column="0">
+        <widget class="Line" name="line_4">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(212, 212, 212);</string>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>2</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
        <item row="8" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarD2Gain">
          <property name="sizePolicy">
@@ -302,29 +318,6 @@
          </property>
          <property name="invertedControls">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QCheckBox" name="checkBoxD2Gain">
-         <property name="text">
-          <string>D2.Gain</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="Line" name="line_4">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(212, 212, 212);</string>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -363,30 +356,6 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="QComboBox" name="comboBoxD1Type">
-         <item>
-          <property name="text">
-           <string>BSplineSmooth</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>BSpline</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exponential</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Linear</string>
-          </property>
-         </item>
-        </widget>
-       </item>
        <item row="2" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarD1Gain">
          <property name="sizePolicy">
@@ -415,11 +384,28 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="checkBoxD1Gain">
-         <property name="text">
-          <string>D1.Gain</string>
-         </property>
+       <item row="6" column="1" colspan="2">
+        <widget class="QComboBox" name="comboBoxD1Type">
+         <item>
+          <property name="text">
+           <string>BSplineSmooth</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>BSpline</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Exponential</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Linear</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item row="0" column="1">
@@ -435,24 +421,32 @@
          </property>
         </widget>
        </item>
-       <item row="10" column="0">
-        <widget class="QCheckBox" name="checkBoxD2Time">
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="checkBoxD1Gain">
          <property name="text">
-          <string>D2.Time</string>
+          <string>D1.Gain</string>
          </property>
         </widget>
        </item>
-       <item row="11" column="0">
-        <widget class="QCheckBox" name="checkBoxD2Tension">
-         <property name="text">
-          <string>D2.Tension</string>
+       <item row="5" column="1" colspan="2">
+        <widget class="QScrollBar" name="horizontalScrollBarD1Tension">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QCheckBox" name="checkBoxD1Time">
-         <property name="text">
-          <string>D1.Time</string>
+         <property name="maximum">
+          <number>127</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedControls">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -480,31 +474,25 @@
          </item>
         </widget>
        </item>
-       <item row="13" column="0">
-        <widget class="QCheckBox" name="checkBoxD2Type">
+       <item row="4" column="0">
+        <widget class="QCheckBox" name="checkBoxD1Time">
          <property name="text">
-          <string>D2.Type</string>
+          <string>D1.Time</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1" colspan="2">
-        <widget class="QScrollBar" name="horizontalScrollBarD1Tension">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="pushButtonEnvelopeAmp">
+         <property name="text">
+          <string>Amp</string>
          </property>
-         <property name="maximum">
-          <number>127</number>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
-         <property name="pageStep">
-          <number>1</number>
+         <property name="checked">
+          <bool>true</bool>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="invertedControls">
+         <property name="autoExclusive">
           <bool>true</bool>
          </property>
         </widget>
@@ -553,22 +541,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="pushButtonEnvelopeAmp">
-         <property name="text">
-          <string>Amp</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <property name="autoExclusive">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
        <item row="4" column="1" colspan="2">
         <widget class="QScrollBar" name="horizontalScrollBarD1Time">
          <property name="sizePolicy">
@@ -598,19 +570,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="pushButtonEnvelopePitch">
-         <property name="text">
-          <string>Pitch</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="autoExclusive">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="Line" name="line_2">
          <property name="styleSheet">
@@ -624,6 +583,53 @@
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="pushButtonEnvelopePitch">
+         <property name="text">
+          <string>Pitch</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="autoExclusive">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QCheckBox" name="checkBoxD2Gain">
+         <property name="text">
+          <string>D2.Gain</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QCheckBox" name="checkBoxD2Time">
+         <property name="text">
+          <string>D2.Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QCheckBox" name="checkBoxD2Tension">
+         <property name="text">
+          <string>D2.Tension</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0">
+        <widget class="QCheckBox" name="checkBoxD2Type">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>D2.Type</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

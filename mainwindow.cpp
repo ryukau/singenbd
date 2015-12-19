@@ -14,6 +14,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // initialzie randomizeSettingsEnvelope
+    randomizeSettingsEnvelope.resize((int)EnvType::End);
+    for (auto &it : randomizeSettingsEnvelope)
+        it.resize((int)EnvParams::End); // Envelope部の8つのパラメータ
+
     setupWaveforms();
 }
 
@@ -196,6 +201,47 @@ void MainWindow::on_comboBoxD2Type_currentIndexChanged(const QString &arg1)
 }
 
 
+void MainWindow::on_checkBoxD1Gain_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Gain] = checked;
+}
+
+void MainWindow::on_checkBoxD1Time_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Time] = checked;
+}
+
+void MainWindow::on_checkBoxD1Tension_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Tension] = checked;
+}
+
+void MainWindow::on_checkBoxD1Type_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Type] = checked;
+}
+
+void MainWindow::on_checkBoxD2Gain_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Gain] = checked;
+}
+
+void MainWindow::on_checkBoxD2Time_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Time] = checked;
+}
+
+void MainWindow::on_checkBoxD2Tension_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Tension] = checked;
+}
+
+void MainWindow::on_checkBoxD2Type_toggled(bool checked)
+{
+    randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Type] = checked;
+}
+
+
 //
 // protected events
 //
@@ -228,14 +274,17 @@ void MainWindow::saveSettings(QString fileName)
     settings.setValue("SampleRate/Random", ui->checkBoxSampleRate->checkState());
     settings.setValue("SuperSampling/Random", ui->checkBoxSuperSampling->checkState());
 
-    //settings.setValue("D1Gain/Random",    ui->checkBoxD1Gain->checkState());
-    //settings.setValue("D1Time/Random",    ui->checkBoxD1Time->checkState());
-    //settings.setValue("D1Tension/Random", ui->checkBoxD1Tension->checkState());
-    //settings.setValue("D1Type/Random",    ui->checkBoxD1Type->checkState());
-    //settings.setValue("D2Gain/Random",    ui->checkBoxD2Gain->checkState());
-    //settings.setValue("D2Time/Random",    ui->checkBoxD2Time->checkState());
-    //settings.setValue("D2Tension/Random", ui->checkBoxD2Tension->checkState());
-    //settings.setValue("D2Type/Random",    ui->checkBoxD2Type->checkState());
+    for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
+    {
+        settings.setValue("D1Gain/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]);
+        settings.setValue("D1Time/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]);
+        settings.setValue("D1Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension]);
+        settings.setValue("D1Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]);
+        settings.setValue("D2Gain/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]);
+        settings.setValue("D2Time/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]);
+        settings.setValue("D2Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension]);
+        settings.setValue("D2Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]);
+    }
 }
 
 
@@ -393,6 +442,15 @@ void MainWindow::refreshEnvelope(EnvType type)
     ui->horizontalScrollBarD2Time->setValue(normalizeSliderValue(env.e2.getDecayTime(), ui->horizontalScrollBarD2Time->maximum()));
     ui->horizontalScrollBarD2Tension->setValue(normalizeSliderValue(env.e2.getDecayTension(), ui->horizontalScrollBarD2Tension->maximum()));
     ui->comboBoxD2Type->setCurrentIndex(static_cast<int>(env.e2.getType()));
+
+    ui->checkBoxD1Gain->setChecked(   randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Gain]);
+    ui->checkBoxD1Time->setChecked(   randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Time]);
+    ui->checkBoxD1Tension->setChecked(randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Tension]);
+    ui->checkBoxD1Type->setChecked(   randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D1Type]);
+    ui->checkBoxD2Gain->setChecked(   randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Gain]);
+    ui->checkBoxD2Time->setChecked(   randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Time]);
+    ui->checkBoxD2Tension->setChecked(randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Tension]);
+    ui->checkBoxD2Type->setChecked(   randomizeSettingsEnvelope[(int)curEnv][(int)EnvParams::D2Type]);
 
     refreshWaveformEnvelope(type);
 }
