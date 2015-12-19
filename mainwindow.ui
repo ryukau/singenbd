@@ -65,6 +65,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="maximum">
           <number>127</number>
          </property>
@@ -87,6 +90,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="maximum">
           <number>127</number>
          </property>
@@ -108,6 +114,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="maximum">
           <number>127</number>
@@ -217,6 +226,9 @@
            <pointsize>16</pointsize>
           </font>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="Value">
           <double>0.160000000000000</double>
          </property>
@@ -320,6 +332,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="maximum">
           <number>127</number>
          </property>
@@ -382,6 +397,9 @@
            <width>0</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="maximum">
           <number>127</number>
@@ -448,6 +466,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="maximum">
           <number>127</number>
@@ -518,6 +539,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="maximum">
           <number>127</number>
          </property>
@@ -540,6 +564,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="maximum">
           <number>127</number>
          </property>
@@ -561,6 +588,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="maximum">
           <number>127</number>
@@ -797,6 +827,9 @@
            <pointsize>16</pointsize>
           </font>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="Maximum">
           <double>128.000000000000000</double>
          </property>
@@ -825,6 +858,9 @@
            <width>0</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
          </property>
          <property name="maximum">
           <number>127</number>
@@ -867,6 +903,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="maximum">
           <number>127</number>
          </property>
@@ -879,7 +918,7 @@
         </widget>
        </item>
        <item row="5" column="0">
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="checkBoxMute">
          <property name="text">
           <string>Mute</string>
          </property>

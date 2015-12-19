@@ -66,6 +66,8 @@ private slots:
     void on_pushButtonSaveIni_clicked();
     void on_pushButtonLoadIni_clicked();
 
+    void on_checkBoxMute_toggled(bool checked);
+
 protected:
     void resizeEvent(QResizeEvent *event);
 

@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QDateTime>
 #include <QSettings>
+#include <QFileDialog>
 #include "utils.h"
 
 const QString defaultIniFile = "temp.ini";
@@ -21,7 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
     for (auto &it : randomizeSettingsEnvelope)
         it.resize((int)EnvParams::End); // Envelope部の8つのパラメータ
 
+    //
     setupWaveforms();
+
+    // context menu slider
+    QList<QAction*> actionListSlider;
+    //actionListSlider.append(ui->actionCopyValue);
+    //actionListSlider.append(ui->actionPasteValue);
+
+    ui->counterPitch->addActions(actionListSlider);
+    ui->counterDuration->addActions(actionListSlider);
 
     // load ini
     if (!QFile::exists(defaultIniFile))
@@ -104,6 +114,11 @@ void MainWindow::on_horizontalScrollBarPhase_valueChanged(int value)
 void MainWindow::on_horizontalScrollBarMod_valueChanged(int value)
 {
     fmto.op(curOp).setModIndex(value / (float)ui->horizontalScrollBarMod->maximum());
+}
+
+void MainWindow::on_checkBoxMute_toggled(bool checked)
+{
+    fmto.op(curOp).mute = checked;
 }
 
 
@@ -331,6 +346,7 @@ void MainWindow::saveSettings(QString fileName)
         settings.setValue(opPrefix + "OscType",    static_cast<int>(fmto.op(op).osc.getType()));
         settings.setValue(opPrefix + "Phase",      static_cast<double>(fmto.op(op).osc.getPhaseOffset()));
         settings.setValue(opPrefix + "Modulation", static_cast<double>(fmto.op(op).getModIndex()));
+        settings.setValue(opPrefix + "Mute", fmto.op(op).mute);
 
         for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
         {
@@ -400,6 +416,7 @@ void MainWindow::loadSettings(QString fileName)
         fmto.op(op).osc.setType(static_cast<Oscillator::OscillatorType>(settings.value(opPrefix + "OscType").toInt()));
         fmto.op(op).osc.setPhaseOffset(settings.value(opPrefix + "Phase").toDouble());
         fmto.op(op).setModIndex(settings.value(opPrefix + "Modulation").toDouble());
+        fmto.op(op).mute = (settings.value(opPrefix + "Mute").toBool());
 
         for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
         {
@@ -541,6 +558,7 @@ void MainWindow::refreshOscillator()
     ui->comboBoxOscType->setCurrentIndex(static_cast<int>(fmto.op(curOp).osc.getType()));
     ui->horizontalScrollBarPhase->setValue(normalizeSliderValue(fmto.op(curOp).osc.getPhaseOffset(), ui->horizontalScrollBarPhase->maximum()));
     ui->horizontalScrollBarMod->setValue(normalizeSliderValue(fmto.op(curOp).getModIndex(), ui->horizontalScrollBarMod->maximum()));
+    ui->checkBoxMute->setChecked(fmto.op(curOp).mute);
 
     refreshEnvelope(curEnv);
 }
