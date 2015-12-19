@@ -3,6 +3,7 @@
 
 #include <QDir>
 #include <QDateTime>
+#include <QSettings>
 #include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -211,6 +212,32 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 //
 // private
 //
+
+void MainWindow::saveSettings(QString fileName)
+{
+    // iniファイルを実行ファイルと同じディレクトリに保存
+    QSettings settings(fileName, QSettings::IniFormat);
+
+    // randomize settings
+    settings.setValue("Pitch/Random", ui->checkBoxPitch->checkState());
+    settings.setValue("OscType/Random", ui->checkBoxOscType->checkState());
+    settings.setValue("Phase/Random", ui->checkBoxPhase->checkState());
+    settings.setValue("Modulation/Random", ui->checkBoxModulation->checkState());
+
+    settings.setValue("Duration/Random", ui->checkBoxDuration->checkState());
+    settings.setValue("SampleRate/Random", ui->checkBoxSampleRate->checkState());
+    settings.setValue("SuperSampling/Random", ui->checkBoxSuperSampling->checkState());
+
+    //settings.setValue("D1Gain/Random",    ui->checkBoxD1Gain->checkState());
+    //settings.setValue("D1Time/Random",    ui->checkBoxD1Time->checkState());
+    //settings.setValue("D1Tension/Random", ui->checkBoxD1Tension->checkState());
+    //settings.setValue("D1Type/Random",    ui->checkBoxD1Type->checkState());
+    //settings.setValue("D2Gain/Random",    ui->checkBoxD2Gain->checkState());
+    //settings.setValue("D2Time/Random",    ui->checkBoxD2Time->checkState());
+    //settings.setValue("D2Tension/Random", ui->checkBoxD2Tension->checkState());
+    //settings.setValue("D2Type/Random",    ui->checkBoxD2Type->checkState());
+}
+
 
 void MainWindow::playSound()
 {

@@ -83,6 +83,8 @@ private:
     EnvType curEnv;
 
     // 関数
+    void saveSettings(QString fileName);
+
     void playSound();
     void saveSound();
     void renderSound();
