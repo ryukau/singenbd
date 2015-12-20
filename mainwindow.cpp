@@ -196,6 +196,29 @@ void MainWindow::on_checkBoxMute_toggled(bool checked)
 }
 
 
+// FX //
+
+void MainWindow::on_horizontalScrollBarDelayTime_valueChanged(int value)
+{
+
+}
+
+void MainWindow::on_horizontalScrollBarDelayDecay_valueChanged(int value)
+{
+
+}
+
+void MainWindow::on_horizontalScrollBarClipGain_valueChanged(int value)
+{
+
+}
+
+void MainWindow::on_horizontalScrollBarClipDecay_valueChanged(int value)
+{
+
+}
+
+
 // Misc //
 
 void MainWindow::on_counterDuration_valueChanged(double value)
@@ -489,6 +512,10 @@ void MainWindow::saveSettings(QString fileName)
     settings.setValue("Phase/Random", ui->checkBoxPhase->checkState());
     settings.setValue("Modulation/Random", ui->checkBoxModulation->checkState());
 
+    // delay
+    settings.setValue("Clip/Gain/Random", ui->checkBoxClipGain->checkState());
+    settings.setValue("Clip/Decay/Random", ui->checkBoxClipDecay->checkState());
+
     settings.setValue("Duration/Random", ui->checkBoxDuration->checkState());
     settings.setValue("SampleRate/Random", ui->checkBoxSampleRate->checkState());
     settings.setValue("SuperSampling/Random", ui->checkBoxSuperSampling->checkState());
@@ -505,10 +532,15 @@ void MainWindow::saveSettings(QString fileName)
         settings.setValue("D2Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]);
     }
 
+    // FX
+    // delay
+    settings.setValue("Clip/Gain", ui->horizontalScrollBarClipGain->value());
+    settings.setValue("Clip/Decay", ui->horizontalScrollBarClipDecay->value());
+
     // misc
     settings.setValue("Duration", static_cast<double>(fmto.duration()));
     settings.setValue("SampleRate", static_cast<int>(SampleRate::get()));
-    //settings.setValue("SuperSampling", );
+    settings.setValue("SuperSampling", ui->comboBoxSuperSampling->currentIndex());
     settings.setValue("DcBlock", ui->checkBoxDcBlock->isChecked());
     settings.setValue("Declick", ui->checkBoxDeclick->isChecked());
 
@@ -559,6 +591,10 @@ void MainWindow::loadSettings(QString fileName)
     ui->checkBoxPhase->setChecked(settings.value("Phase/Random").toBool());
     ui->checkBoxModulation->setChecked(settings.value("Modulation/Random").toBool());
 
+    // delay
+    ui->checkBoxClipGain->setChecked(settings.value("Clip/Gain/Random").toBool());
+    ui->checkBoxClipDecay->setChecked(settings.value("Clip/Decay/Random").toBool());
+
     ui->checkBoxDuration->setChecked(settings.value("Duration/Random").toBool());
     ui->checkBoxSampleRate->setChecked(settings.value("SampleRate/Random").toBool());
     ui->checkBoxSuperSampling->setChecked(settings.value("SuperSampling/Random").toBool());
@@ -575,10 +611,15 @@ void MainWindow::loadSettings(QString fileName)
         randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]    = (settings.value("D2Type/Random").toBool());
     }
 
+    // FX
+    // delay
+    ui->horizontalScrollBarClipGain->setValue(settings.value("Clip/Gain").toInt());
+    ui->horizontalScrollBarClipDecay->setValue(settings.value("Clip/Decay").toInt());
+
     // misc
     fmto.setDuration(settings.value("Duration").toDouble());
     SampleRate::set(settings.value("SampleRate").toInt());
-    // SuperSampling
+    ui->comboBoxSuperSampling->setCurrentIndex(settings.value("SuperSampling").toInt());
     ui->checkBoxDcBlock->setChecked(settings.value("DcBlock").toBool());
     ui->checkBoxDeclick->setChecked(settings.value("Declick").toBool());
 
@@ -664,14 +705,32 @@ void MainWindow::renderSound()
         //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
 
+    if (0 < ui->horizontalScrollBarClipGain->value())
+        clip(waveSound);
+
     if (ui->checkBoxDcBlock->isChecked())
-        DcKill();
+        dcKill();
 
     if (ui->checkBoxDeclick->isChecked())
-        Declick(minSamples);
+        declick(minSamples);
 }
 
-void MainWindow::DcKill()
+void MainWindow::clip(QVector<float> &wav)
+{
+    float gain = 1.0f + normalizeSliderInput(ui->horizontalScrollBarClipGain->value(), ui->horizontalScrollBarClipGain->maximum());
+    float decayVal = std::max(1e-20f, normalizeSliderInput(ui->horizontalScrollBarClipDecay->value(), ui->horizontalScrollBarClipDecay->maximum()));
+
+    // Waveshaper :: Gloubi-boulga
+    for (int i = 0; i < wav.size(); ++i)
+    {
+        float decay = std::min((float)i / (wav.size() * decayVal), 1.0f);
+        float x = (2.0f - decay * decay) * gain * wav[i] * 0.686306;
+        float a = 1.0 + exp(sqrt(fabs(x)) * -0.75);
+        wav[i] = 0.5f * ((exp(x) - exp(-x * a)) / (exp(x) + exp(-x)));
+    }
+}
+
+void MainWindow::dcKill()
 {
     dcBlocker.clearBuffer();
 
@@ -681,7 +740,7 @@ void MainWindow::DcKill()
     }
 }
 
-void MainWindow::Declick(int declickLength)
+void MainWindow::declick(int declickLength)
 {
     for (int i = 0; i < declickLength && i < waveSound.size(); ++i)
     {
@@ -757,6 +816,8 @@ int MainWindow::getNumberOfSamples()
 
 float MainWindow::normalizeSliderInput(int value, int maximum)
 {
+    // QAbstructSliderを入力とするべきだった
+    // ただしcounterを書き直す必要がある
     return static_cast<float>(value) / static_cast<float>(maximum);
 }
 

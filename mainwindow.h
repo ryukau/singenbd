@@ -38,6 +38,12 @@ private slots:
     void on_horizontalScrollBarMod_valueChanged(int value);
     void on_checkBoxMute_toggled(bool checked);
 
+    // FX
+    void on_horizontalScrollBarDelayTime_valueChanged(int value);
+    void on_horizontalScrollBarDelayDecay_valueChanged(int value);
+    void on_horizontalScrollBarClipGain_valueChanged(int value);
+    void on_horizontalScrollBarClipDecay_valueChanged(int value);
+
     // Misc
     void on_counterDuration_valueChanged(double value);
     void on_spinBoxSampleRate_valueChanged(int arg1);
@@ -144,8 +150,9 @@ private:
     void playSound();
     void saveSound();
     void renderSound();
-    void DcKill();
-    void Declick(int declickLength);
+    void clip(QVector<float> &wav);
+    void dcKill();
+    void declick(int declickLength);
 
     void setupWaveforms();
     void setupContextMenu();
