@@ -512,7 +512,8 @@ void MainWindow::saveSettings(QString fileName)
     settings.setValue("Phase/Random", ui->checkBoxPhase->checkState());
     settings.setValue("Modulation/Random", ui->checkBoxModulation->checkState());
 
-    // delay
+    settings.setValue("Delay/Time/Random", ui->checkBoxDelayTime->checkState());
+    settings.setValue("Delay/Decay/Random", ui->checkBoxDelayDecay->checkState());
     settings.setValue("Clip/Gain/Random", ui->checkBoxClipGain->checkState());
     settings.setValue("Clip/Decay/Random", ui->checkBoxClipDecay->checkState());
 
@@ -533,7 +534,8 @@ void MainWindow::saveSettings(QString fileName)
     }
 
     // FX
-    // delay
+    settings.setValue("Delay/Time", ui->horizontalScrollBarDelayTime->value());
+    settings.setValue("Delay/Decay", ui->horizontalScrollBarDelayDecay->value());
     settings.setValue("Clip/Gain", ui->horizontalScrollBarClipGain->value());
     settings.setValue("Clip/Decay", ui->horizontalScrollBarClipDecay->value());
 
@@ -591,7 +593,8 @@ void MainWindow::loadSettings(QString fileName)
     ui->checkBoxPhase->setChecked(settings.value("Phase/Random").toBool());
     ui->checkBoxModulation->setChecked(settings.value("Modulation/Random").toBool());
 
-    // delay
+    ui->checkBoxDelayTime->setChecked(settings.value("Delay/Time/Random").toBool());
+    ui->checkBoxDelayDecay->setChecked(settings.value("Delay/Decay/Random").toBool());
     ui->checkBoxClipGain->setChecked(settings.value("Clip/Gain/Random").toBool());
     ui->checkBoxClipDecay->setChecked(settings.value("Clip/Decay/Random").toBool());
 
@@ -612,7 +615,8 @@ void MainWindow::loadSettings(QString fileName)
     }
 
     // FX
-    // delay
+    ui->horizontalScrollBarDelayTime->setValue(settings.value("Delay/Time").toInt());
+    ui->horizontalScrollBarDelayDecay->setValue(settings.value("Delay/Decay").toInt());
     ui->horizontalScrollBarClipGain->setValue(settings.value("Clip/Gain").toInt());
     ui->horizontalScrollBarClipDecay->setValue(settings.value("Clip/Decay").toInt());
 
@@ -777,9 +781,16 @@ void MainWindow::setupContextMenu()
     actionListSlider.append(ui->actionPasteValue);
 
     ui->counterPitch->addActions(actionListSlider);
-    ui->counterDuration->addActions(actionListSlider);
     ui->horizontalScrollBarPhase->addActions(actionListSlider);
     ui->horizontalScrollBarMod->addActions(actionListSlider);
+
+    ui->horizontalScrollBarDelayTime->addActions(actionListSlider);
+    ui->horizontalScrollBarDelayDecay->addActions(actionListSlider);
+    ui->horizontalScrollBarClipGain->addActions(actionListSlider);
+    ui->horizontalScrollBarClipDecay->addActions(actionListSlider);
+
+    ui->counterDuration->addActions(actionListSlider);
+
     ui->horizontalScrollBarD1Gain->addActions(actionListSlider);
     ui->horizontalScrollBarD1Time->addActions(actionListSlider);
     ui->horizontalScrollBarD1Tension->addActions(actionListSlider);
