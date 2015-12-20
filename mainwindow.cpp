@@ -79,6 +79,18 @@ void MainWindow::on_pushButtonRandom_clicked()
     std::uniform_int_distribution<int> distEnvelopeType((int)Envelope::Type::Begin, (int)Envelope::Type::End - 1);
     std::uniform_int_distribution<int> distOscType((int)Oscillator::OscillatorType::Begin, (int)Oscillator::OscillatorType::End - 1);
 
+    if (ui->checkBoxDelayTime->isChecked())
+        ui->horizontalScrollBarDelayTime->setValue(dist(mt) * ui->horizontalScrollBarDelayTime->maximum());
+
+    if (ui->checkBoxDelayDecay->isChecked())
+        ui->horizontalScrollBarDelayDecay->setValue(dist(mt) * ui->horizontalScrollBarDelayDecay->maximum());
+
+    if (ui->checkBoxClipGain->isChecked())
+        ui->horizontalScrollBarClipGain->setValue(dist(mt) * ui->horizontalScrollBarClipGain->maximum());
+
+    if (ui->checkBoxClipDecay->isChecked())
+        ui->horizontalScrollBarClipDecay->setValue(dist(mt) * ui->horizontalScrollBarClipDecay->maximum());
+
     if (ui->checkBoxDuration->isChecked())
     {
         std::uniform_real_distribution<float> distDuration(0.0, 4.0);
