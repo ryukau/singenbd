@@ -235,7 +235,7 @@ void MainWindow::on_checkBoxMute_toggled(bool checked)
 
 void MainWindow::on_horizontalScrollBarDelayTime_valueChanged(int value)
 {
-    displayValueToStatusBar("DelayTime[msec]", getDelayTime());
+    displayValueToStatusBar("DelayTime[msec]", getDelayTime() * 1000.0);
 }
 
 void MainWindow::on_horizontalScrollBarDelayDecay_valueChanged(int value)
