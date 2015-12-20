@@ -709,6 +709,9 @@ void MainWindow::renderSound()
         //waveSound[i] = sin(2.0f * PI * 100.0f * i / SampleRate::get());
     }
 
+    if (0 < ui->horizontalScrollBarDelayDecay->value())
+        delay(waveSound);
+
     if (0 < ui->horizontalScrollBarClipGain->value())
         clip(waveSound);
 
@@ -731,6 +734,36 @@ void MainWindow::clip(QVector<float> &wav)
         float x = (2.0f - decay * decay) * gain * wav[i] * 0.686306;
         float a = 1.0 + exp(sqrt(fabs(x)) * -0.75);
         wav[i] = 0.5f * ((exp(x) - exp(-x * a)) / (exp(x) + exp(-x)));
+    }
+}
+
+void MainWindow::delay(QVector<float> &wav)
+{
+    // 時間の単位はsec, 最小0.1ms, 最大50.1ms
+    float time = 0.0001f + 0.050f * normalizeSliderInput(ui->horizontalScrollBarDelayTime->value(), ui->horizontalScrollBarDelayTime->maximum());
+
+    // ここでの decay は feedback と同義
+    float decay = normalizeSliderInput(ui->horizontalScrollBarDelayDecay->value(), ui->horizontalScrollBarDelayDecay->maximum());
+    float attenuation = 0.9f * decay;
+
+    // 長さ分のバッファを用意
+    QVector<float> buf;
+    buf.resize(time * SampleRate::get() * superSampling);
+
+    int bufIndex = 0;
+    float amp = (1.0f - 0.6f * decay);
+    for (int i = 0; i < wav.size(); ++i)
+    {
+        float temp = 0.0f;
+        for (int j = 0; j < superSampling; ++j)
+        {
+            buf.push_back(wav[i] + attenuation * buf[0]);
+            temp += (wav[i] + buf[0]) * amp;
+
+            buf.pop_front();
+            bufIndex = (bufIndex + 1) % buf.size();
+        }
+        wav[i] = temp / superSampling;
     }
 }
 
