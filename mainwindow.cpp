@@ -161,9 +161,6 @@ void MainWindow::on_pushButtonRandom_clicked()
 
     refresh();
     on_pushButtonRender_clicked();
-
-    if (ui->checkBoxInstaSaveWav->isChecked())
-        saveSound();
 }
 
 
