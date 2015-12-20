@@ -5,20 +5,7 @@
 ## Oscillator
 FMの構成は下図の通り。
 
-```
-+-+
-| |
-3-+
-|
-2-+
-| |
-1 sub
-+-+
-|
-FX
-|
-output
-```
+![SingenBDの構成](algorithm.png)
   
 ### Pitch
 整数部がmidiノートナンバーに対応している。A4 (440Hz) = 69。小数部はcent値。
