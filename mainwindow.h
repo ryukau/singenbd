@@ -151,6 +151,7 @@ private:
     void saveSound();
     void renderSound();
     void clip(QVector<float> &wav);
+    float getDelayTime();
     void delay(QVector<float> &wav);
     void dcKill();
     void declick(int declickLength);

@@ -235,8 +235,7 @@ void MainWindow::on_checkBoxMute_toggled(bool checked)
 
 void MainWindow::on_horizontalScrollBarDelayTime_valueChanged(int value)
 {
-    float delayTime = 0.0001f + 0.050f * (float)value / ui->horizontalScrollBarDelayTime->maximum();
-    displayValueToStatusBar("DelayTime[msec]", delayTime);
+    displayValueToStatusBar("DelayTime[msec]", getDelayTime());
 }
 
 void MainWindow::on_horizontalScrollBarDelayDecay_valueChanged(int value)
@@ -795,17 +794,23 @@ void MainWindow::clip(QVector<float> &wav)
     }
 }
 
-void MainWindow::delay(QVector<float> &wav)
+float MainWindow::getDelayTime()
 {
     // 時間の単位はsec, 最小0.1ms, 最大50.1ms
-    float time = 0.0001f + 0.050f * normalizeSliderInput(ui->horizontalScrollBarDelayTime->value(), ui->horizontalScrollBarDelayTime->maximum());
+    float time = normalizeSliderInput(ui->horizontalScrollBarDelayTime->value(), ui->horizontalScrollBarDelayTime->maximum());
+    return 0.0001f * pow(2.0f, time * 9.0f);
+}
+
+void MainWindow::delay(QVector<float> &wav)
+{
+    float time = getDelayTime();
 
     // ここでの decay は feedback と同義
     float decay = normalizeSliderInput(ui->horizontalScrollBarDelayDecay->value(), ui->horizontalScrollBarDelayDecay->maximum());
     float attenuation = 0.9f * decay;
 
     // 長さ分のバッファを用意
-    QVector<float> buf;
+    QVector<float> buf; // このQVectorが大きくなると動作が重くなる
     buf.resize(time * SampleRate::get() * superSampling);
 
     int bufIndex = 0;
