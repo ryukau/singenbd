@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QSettings>
 #include <QFileDialog>
+#include <QElapsedTimer>
 #include "utils.h"
 
 const QString defaultIniFile = "temp.ini";
@@ -52,11 +53,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButtonRender_clicked()
 {
+    QElapsedTimer timer;
+
+    timer.start();
     renderSound();
+    ui->statusBar->showMessage("Render Time [msec]: " + QString("%1").arg(timer.elapsed()));
 
     soundPlayer.setWave(waveSound);
     ui->waveformMain->refresh();
     playSound();
+
+    if (ui->checkBoxInstaSaveWav->isChecked())
+        saveSound();
 }
 
 void MainWindow::on_pushButtonPlay_clicked()
@@ -152,6 +160,10 @@ void MainWindow::on_pushButtonRandom_clicked()
     }
 
     refresh();
+    playSound();
+
+    if (ui->checkBoxInstaSaveWav->isChecked())
+        saveSound();
 }
 
 
@@ -160,26 +172,35 @@ void MainWindow::on_pushButtonRandom_clicked()
 void MainWindow::on_pushButtonOscillator1_clicked()
 {
     setCurrentOperator(0);
+    ui->statusBar->showMessage("Oscillator 1");
 }
 
 void MainWindow::on_pushButtonOscillator2_clicked()
 {
     setCurrentOperator(1);
+    ui->statusBar->showMessage("Oscillator 2");
 }
 
 void MainWindow::on_pushButtonOscillator3_clicked()
 {
     setCurrentOperator(2);
+    ui->statusBar->showMessage("Oscillator 3");
 }
 
 void MainWindow::on_pushButtonOscillatorSub_clicked()
 {
     setCurrentOperator(3);
+    ui->statusBar->showMessage("Oscillator Sub");
 }
 
 void MainWindow::on_counterPitch_valueChanged(double value)
 {
     fmto.op(curOp).setPitch(value);
+
+    QString semitone = QString("%1").arg(floor(value));
+    QString cent = QString("%1").arg(100.0 * fmod(value, 1.0));
+    QString hz = QString("%1").arg(PitchCalc::intervalToFreq(value * 100.0));
+    ui->statusBar->showMessage("Pitch: " + semitone + " semitone + " + cent + " cent, " + hz + "[Hz]");
 }
 
 void MainWindow::on_comboBoxOscType_currentIndexChanged(const QString &arg1)
@@ -195,11 +216,13 @@ void MainWindow::on_comboBoxOscType_currentIndexChanged(const QString &arg1)
 void MainWindow::on_horizontalScrollBarPhase_valueChanged(int value)
 {
     fmto.op(curOp).osc.setPhaseOffset(value / (float)ui->horizontalScrollBarPhase->maximum());
+    displayValueToStatusBar("Phase", value);
 }
 
 void MainWindow::on_horizontalScrollBarMod_valueChanged(int value)
 {
     fmto.op(curOp).setModIndex(value / (float)ui->horizontalScrollBarMod->maximum());
+    displayValueToStatusBar("Modulation", value);
 }
 
 void MainWindow::on_checkBoxMute_toggled(bool checked)
@@ -212,22 +235,23 @@ void MainWindow::on_checkBoxMute_toggled(bool checked)
 
 void MainWindow::on_horizontalScrollBarDelayTime_valueChanged(int value)
 {
-
+    float delayTime = 0.0001f + 0.050f * (float)value / ui->horizontalScrollBarDelayTime->maximum();
+    displayValueToStatusBar("DelayTime[msec]", delayTime);
 }
 
 void MainWindow::on_horizontalScrollBarDelayDecay_valueChanged(int value)
 {
-
+    displayValueToStatusBar("DelayDecay", value);
 }
 
 void MainWindow::on_horizontalScrollBarClipGain_valueChanged(int value)
 {
-
+    displayValueToStatusBar("ClipGain", value);
 }
 
 void MainWindow::on_horizontalScrollBarClipDecay_valueChanged(int value)
 {
-
+    displayValueToStatusBar("ClipDecay", value);
 }
 
 
@@ -236,11 +260,13 @@ void MainWindow::on_horizontalScrollBarClipDecay_valueChanged(int value)
 void MainWindow::on_counterDuration_valueChanged(double value)
 {
     fmto.setDuration(value);
+    ui->statusBar->showMessage("Duration[sec]: " + QString("%1").arg(value));
 }
 
 void MainWindow::on_spinBoxSampleRate_valueChanged(int arg1)
 {
     SampleRate::set(arg1);
+    ui->statusBar->showMessage("SampleRate: " + QString("%1").arg(arg1));
 }
 
 void MainWindow::on_comboBoxSuperSampling_currentIndexChanged(const QString &arg1)
@@ -261,16 +287,19 @@ void MainWindow::on_comboBoxSuperSampling_currentIndexChanged(const QString &arg
 void MainWindow::on_pushButtonEnvelopeAmp_clicked()
 {
     setCurrentEnvelope(EnvType::Amp);
+    ui->statusBar->showMessage("Envelope Amp");
 }
 
 void MainWindow::on_pushButtonEnvelopeShape_clicked()
 {
     setCurrentEnvelope(EnvType::Shape);
+    ui->statusBar->showMessage("Envelope Shape");
 }
 
 void MainWindow::on_pushButtonEnvelopePitch_clicked()
 {
     setCurrentEnvelope(EnvType::Pitch);
+    ui->statusBar->showMessage("Envelope Pitch");
 }
 
 
@@ -279,6 +308,8 @@ void MainWindow::on_horizontalScrollBarD1Gain_valueChanged(int value)
     float val = normalizeSliderInput(value, ui->horizontalScrollBarD1Gain->maximum());
     getEnvelopeType(curOp, curEnv).e1.setGain(val);
     refreshWaveformEnvelope(curEnv);
+
+    displayValueToStatusBar("D1Gain", value);
 }
 
 void MainWindow::on_horizontalScrollBarD1Time_valueChanged(int value)
@@ -286,6 +317,8 @@ void MainWindow::on_horizontalScrollBarD1Time_valueChanged(int value)
     float val = normalizeSliderInput(value, ui->horizontalScrollBarD1Time->maximum());
     getEnvelopeType(curOp, curEnv).e1.setDecayTime(val);
     refreshWaveformEnvelope(curEnv);
+
+    displayValueToStatusBar("D1Time", value);
 }
 
 void MainWindow::on_horizontalScrollBarD1Tension_valueChanged(int value)
@@ -293,6 +326,8 @@ void MainWindow::on_horizontalScrollBarD1Tension_valueChanged(int value)
     float val = normalizeSliderInput(value, ui->horizontalScrollBarD1Tension->maximum());
     getEnvelopeType(curOp, curEnv).e1.setDecayTension(val);
     refreshWaveformEnvelope(curEnv);
+
+    displayValueToStatusBar("D1Tension", value);
 }
 
 void MainWindow::on_comboBoxD1Type_currentIndexChanged(const QString &arg1)
@@ -315,6 +350,8 @@ void MainWindow::on_horizontalScrollBarD2Gain_valueChanged(int value)
     float val = normalizeSliderInput(value, ui->horizontalScrollBarD2Gain->maximum());
     getEnvelopeType(curOp, curEnv).e2.setGain(val);
     refreshWaveformEnvelope(curEnv);
+
+    displayValueToStatusBar("D2Gain", value);
 }
 
 void MainWindow::on_horizontalScrollBarD2Time_valueChanged(int value)
@@ -322,6 +359,8 @@ void MainWindow::on_horizontalScrollBarD2Time_valueChanged(int value)
     float val = normalizeSliderInput(value, ui->horizontalScrollBarD2Time->maximum());
     getEnvelopeType(curOp, curEnv).e2.setDecayTime(val);
     refreshWaveformEnvelope(curEnv);
+
+    displayValueToStatusBar("D2Time", value);
 }
 
 void MainWindow::on_horizontalScrollBarD2Tension_valueChanged(int value)
@@ -329,6 +368,8 @@ void MainWindow::on_horizontalScrollBarD2Tension_valueChanged(int value)
     float val = normalizeSliderInput(value, ui->horizontalScrollBarD2Tension->maximum());
     getEnvelopeType(curOp, curEnv).e2.setDecayTension(val);
     refreshWaveformEnvelope(curEnv);
+
+    displayValueToStatusBar("D2Tension", value);
 }
 
 void MainWindow::on_comboBoxD2Type_currentIndexChanged(const QString &arg1)
@@ -696,6 +737,9 @@ void MainWindow::saveSound()
     name.append(QDateTime::currentDateTime().toString("_yyyy.MM.dd_hh.mm.ss.zzz"));
     name.append(".wav");
     soundPlayer.SaveWaveFile(name);
+
+    // 保存先の表示
+    ui->statusBar->showMessage("File is saved to: " + name);
 }
 
 void MainWindow::renderSound()
@@ -867,6 +911,11 @@ int MainWindow::getNumberOfSamples()
 {
     // counterDuration->valueの単位は秒
     return static_cast<int>(fmto.duration() * SampleRate::get());
+}
+
+void MainWindow::displayValueToStatusBar(QString label, double value)
+{
+    ui->statusBar->showMessage(label + ": " + QString("%1").arg(value));
 }
 
 

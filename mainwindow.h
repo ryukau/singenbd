@@ -158,6 +158,7 @@ private:
     void setupWaveforms();
     void setupContextMenu();
     int getNumberOfSamples();
+    void displayValueToStatusBar(QString label, double value);
     float normalizeSliderInput(int value, int maximum);
     int normalizeSliderValue(float value, int maximum);
 
