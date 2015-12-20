@@ -351,6 +351,9 @@
        </item>
        <item row="0" column="3">
         <widget class="QPushButton" name="pushButtonOscillatorSub">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ActionsContextMenu</enum>
+         </property>
          <property name="text">
           <string>Sub</string>
          </property>
