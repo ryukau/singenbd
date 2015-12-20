@@ -576,14 +576,15 @@ void MainWindow::saveSettings(QString fileName)
 
     for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
     {
-        settings.setValue("D1Gain/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]);
-        settings.setValue("D1Time/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]);
-        settings.setValue("D1Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension]);
-        settings.setValue("D1Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]);
-        settings.setValue("D2Gain/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]);
-        settings.setValue("D2Time/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]);
-        settings.setValue("D2Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension]);
-        settings.setValue("D2Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]);
+        QString envPrefix = QString("Envelope%1/").arg(env);
+        settings.setValue(envPrefix + "D1Gain/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]);
+        settings.setValue(envPrefix + "D1Time/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]);
+        settings.setValue(envPrefix + "D1Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension]);
+        settings.setValue(envPrefix + "D1Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]);
+        settings.setValue(envPrefix + "D2Gain/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]);
+        settings.setValue(envPrefix + "D2Time/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]);
+        settings.setValue(envPrefix + "D2Tension/Random", randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension]);
+        settings.setValue(envPrefix + "D2Type/Random",    randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]);
     }
 
     // FX
@@ -657,14 +658,15 @@ void MainWindow::loadSettings(QString fileName)
 
     for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
     {
-        randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]    = (settings.value("D1Gain/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]    = (settings.value("D1Time/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension] = (settings.value("D1Tension/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]    = (settings.value("D1Type/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]    = (settings.value("D2Gain/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]    = (settings.value("D2Time/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension] = (settings.value("D2Tension/Random").toBool());
-        randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]    = (settings.value("D2Type/Random").toBool());
+        QString envPrefix = QString("Envelope%1/").arg(env);
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Gain]    = (settings.value(envPrefix + "D1Gain/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Time]    = (settings.value(envPrefix + "D1Time/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Tension] = (settings.value(envPrefix + "D1Tension/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D1Type]    = (settings.value(envPrefix + "D1Type/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Gain]    = (settings.value(envPrefix + "D2Gain/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Time]    = (settings.value(envPrefix + "D2Time/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Tension] = (settings.value(envPrefix + "D2Tension/Random").toBool());
+        randomizeSettingsEnvelope[env][(int)EnvParams::D2Type]    = (settings.value(envPrefix + "D2Type/Random").toBool());
     }
 
     // FX
