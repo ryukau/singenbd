@@ -79,8 +79,8 @@ void MainWindow::on_pushButtonSave_clicked()
 
 void MainWindow::on_pushButtonRandom_clicked()
 {
-    //std::random_device rnd; // DebugビルドにするとここでR6010がでてabort()
-    std::mt19937 mt(10);//rnd());
+    std::random_device rnd;
+    std::mt19937 mt(rnd());
 
     std::uniform_real_distribution<float> dist(0.0, 1.0);
     std::uniform_real_distribution<float> distPitch(0.0, 128.0);
@@ -128,7 +128,7 @@ void MainWindow::on_pushButtonRandom_clicked()
         if (ui->checkBoxPhase->isChecked())
             fmto.op(op).osc.setPhaseOffset(dist(mt));
 
-        if (ui->checkBoxPhase->isChecked())
+        if (ui->checkBoxModulation->isChecked())
             fmto.op(op).setModIndex(dist(mt));
 
         for (int env = (int)EnvType::Begin; env < (int)EnvType::End; ++env)
@@ -160,7 +160,7 @@ void MainWindow::on_pushButtonRandom_clicked()
     }
 
     refresh();
-    playSound();
+    on_pushButtonRender_clicked();
 
     if (ui->checkBoxInstaSaveWav->isChecked())
         saveSound();

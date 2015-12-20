@@ -51,6 +51,7 @@ float FMTOComplex::render(float time, float deltaTime)
     fmto[0].setModInput(out[1]);
     fmto[1].setModInput(out[2]);
     fmto[2].setModInput(out[2]);
+    fmto[3].setModInput(out[2]);
 
     for (int i = 0; i < fmto.size(); ++i)
     {
